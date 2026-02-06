@@ -6,7 +6,7 @@
 ## 2026-02-06 - Component Selection (Repeater)
 IR LED: SFH 4546 (950nm)\
 IR Receiver: TSOP38238 (950nm)\
-MCU: EPS32-S3\
+MCU: ATTiny85\
 Fet Switches: SI2342DS-T1-GE3 (8 VDS and 6 Id)\
 Gate Driver: DGD0211CWT-7 (Low Side Gate Driver)\
 Battery: 9V at 3Wh
@@ -17,5 +17,5 @@ SFH 4546 emits 130mW/sr at 38kHz. Expected dBm output will be $10 \cdot \log_{10
 
 ### Current Schematic
 <img width="1041" height="682" alt="image" src="https://github.com/user-attachments/assets/2fb8163f-50e0-4a81-977d-19dc36fd26de" />
-To be changed:\ 
+To be changed:
 - Pi filter to tune for the 38kHz signal
