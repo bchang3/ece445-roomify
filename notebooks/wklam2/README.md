@@ -9,7 +9,7 @@ IR Receiver: TSOP38238 (950nm)\
 MCU: EPS32-S3\
 Fet Switches: SI2342DS-T1-GE3 (8 VDS and 6 Id)\
 Gate Driver: DGD0211CWT-7 (Low Side Gate Driver)\
-Battery: 9V at 3Wh\
+Battery: 9V at 3Wh
 
 
 ### Expected Power
