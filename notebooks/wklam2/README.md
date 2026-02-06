@@ -4,12 +4,12 @@
 <img width="650" height="400" alt="IMG_0731" src="https://github.com/user-attachments/assets/8f52a39a-519d-4e4e-9d9c-dd46d14ea540" />
 
 ## 2026-02-06 - Component Selection (Repeater)
-IR LED: SFH 4546 (950nm)
-IR Receiver: TSOP38238 (950nm)
-MCU: EPS32-S3
-Fet Switches: SI2342DS-T1-GE3 (8 VDS and 6 Id)
-Gate Driver: DGD0211CWT-7 (Low Side Gate Driver)
-Battery: 9V at 3Wh
+IR LED: SFH 4546 (950nm)\
+IR Receiver: TSOP38238 (950nm)\
+MCU: EPS32-S3\
+Fet Switches: SI2342DS-T1-GE3 (8 VDS and 6 Id)\
+Gate Driver: DGD0211CWT-7 (Low Side Gate Driver)\
+Battery: 9V at 3Wh\
 
 
 ### Expected Power
