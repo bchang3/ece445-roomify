@@ -9,4 +9,4 @@ IR Receiver: TSOP38238 (950nm)
 MCU: EPS32-S3
 
 ### Expected Power
-SFH 4546 emits 130mW/sr at 38kHz. Expected dBm output wille be $10\log_{10}(130) = 21.1$. With the receiver having a minimum power of $-5$dbm, we have a margin of around 26 dBm. Our targeted distance of a 20 foot radius will be satisfied by our link margin.
+SFH 4546 emits 130mW/sr at 38kHz. Expected dBm output wille be $10 \cdot \log_{10}(130) = 21.1$. With the receiver having a minimum power of -5dbm, we have a margin of around 26 dBm. Our targeted distance of a 20 foot radius will be satisfied by our link margin.
