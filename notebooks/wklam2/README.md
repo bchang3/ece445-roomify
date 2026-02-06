@@ -14,3 +14,8 @@ Battery: 9V at 3Wh
 
 ### Expected Power
 SFH 4546 emits 130mW/sr at 38kHz. Expected dBm output will be $10 \cdot \log_{10}(130) = 21.1$. With the receiver having a minimum power of -5dbm, we have a margin of around 26 dBm. Our targeted distance of a 20 foot radius will be satisfied by our link margin.
+
+### Current Schematic
+<img width="1041" height="682" alt="image" src="https://github.com/user-attachments/assets/2fb8163f-50e0-4a81-977d-19dc36fd26de" />
+To be changed: 
+- Pi filter to tune for the 38kHz signal
