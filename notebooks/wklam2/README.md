@@ -34,3 +34,7 @@ Diagram of full hardware level diagram.
 ## 2026-02-11 
 ### Power Budgeting
 
+### Repeater
+I was able to add a reverse protection PMOS circuit to our input of our battery. This helps us protect us from shorting out our LDO and any DC-DC power converters of our board.
+<img width="535" height="364" alt="image" src="https://github.com/user-attachments/assets/bc4af0da-dd49-403c-9005-81688fcaefaa" />
+
