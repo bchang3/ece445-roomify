@@ -21,4 +21,4 @@ To be changed:
 - Pi filter to tune for the 38kHz signal
 
 ## 2026-02-11 - Repeater Link Budgeting
-From previous calculations, we expected 130mW/sr, but the solid angle of our IR led has a size of around $20mm^2$ which will allow us to find that the solid angle $\Omega = \frac{A}{d^2}$. For our expected distance of around 10 meters, we get a solid angle of $\Omega = \frac{20\dot 10^{-7}}{10^2}$
+From previous calculations, we expected 130mW/sr, but the solid angle of our IR led has a size of around $20mm^2$ which will allow us to find that the solid angle $\Omega = \frac{A}{d^2}$. For our expected distance of around 10 meters, we get a solid angle of $\Omega = \frac{20 \cdot 10^{-7}}{10^2}$
