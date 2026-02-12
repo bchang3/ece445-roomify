@@ -19,3 +19,6 @@ SFH 4546 emits 130mW/sr at 38kHz. Expected dBm output will be $10 \cdot \log_{10
 <img width="1041" height="682" alt="image" src="https://github.com/user-attachments/assets/2fb8163f-50e0-4a81-977d-19dc36fd26de" />
 To be changed:
 - Pi filter to tune for the 38kHz signal
+
+## 2026-02-11 - Repeater Link Budgeting
+From previous calculations, we expected 130mW/sr, but the solid angle of our IR led has a size of around 20$mm^2$
