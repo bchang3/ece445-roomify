@@ -27,5 +27,8 @@ From previous calculations, we expected 130mW/sr, but the solid angle of our IR 
 ### Isolation for Offline
 Examined the difference between full wave bridge rectifier or center tap transformer for rectification. The efficiency of a center tap XFMR would be higher than the full wave and also include less voltage drops across the diodes, but it is more expensive. It would bypass the need for a flyback transformer, but at 60 Hz, the transformer would be rather large. It would be a trade off and something to look into for a smaller transformer that is rated for higher frequencies (which allows us to use our FB converter) and reduce footprint while maintaining isolation between our high and low voltage circuits.
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/ee3f0e6b-1b49-41b5-917f-88ce246008c2" />\
-Diagram to help show the current flow diagram.
+Diagram to help show the current flow diagram.\
+<img width="942" height="527" alt="image" src="https://github.com/user-attachments/assets/ec2dc364-b7a9-4a05-8828-8f6f30def498" />\
+Diagram of full hardware level diagram.
+
 
