@@ -31,4 +31,6 @@ Diagram to help show the current flow diagram.\
 <img width="800" height="470" alt="image" src="https://github.com/user-attachments/assets/ec2dc364-b7a9-4a05-8828-8f6f30def498" />\
 Diagram of full hardware level diagram.
 
+## 2026-02-11 
+### Power Budgeting
 
