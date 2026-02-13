@@ -44,3 +44,8 @@ I was able to add a reverse protection NMOS circuit to our input of our battery.
 ### Major Revision
 Revised the 12V line to be a 24V line. We realized that for a flyback transformer, the the ratios determined the sizing of our voltage step up and down. We want a 4:1:1 transformer, so that requires a 24V line. Since the LT1170 can handle input of up to 60V, a 24V input will not affect it.
 
+## 2026-02-12
+### DC-DC 24V-3V3 Converter
+Simulation completed and component selection
+<img width="1324" height="356" alt="image" src="https://github.com/user-attachments/assets/5fa92049-1d99-4825-844d-e3f8bed1bdf0" />\
+Tested with a load of varying current to mirror a MCU with a varying load and current draw. Peaking at around 3V6 which is the rated maximum of our MCU. Might look into ways to reduce Q factor of our system as well as set a 3V3 limit with possible zener diode or others. Average steady state voltage of around 3V2.
