@@ -38,6 +38,7 @@ On our main logic board inside the box, we are using an LT1170 as a DC-DC conver
 Combining the current requirements for the MCUs and the IR LEDs gives a total budget of 3A. The rating for the LT1170 is 5A at 3v3. For our 12V system that powers our 3v3 system, it is required to output around 10 Watts. Our flyback converter can deliver up to 40 Watts of power, so we will have an ample amount of power for our system. Below is a simulation of our LT1170 component that delivers enough voltage and current.
 
 ### Repeater
-I was able to add a reverse protection PMOS circuit to our input of our battery. This helps us protect us from shorting out our LDO and any DC-DC power converters of our board.
-<img width="535" height="364" alt="image" src="https://github.com/user-attachments/assets/bc4af0da-dd49-403c-9005-81688fcaefaa" />
+I was able to add a reverse protection NMOS circuit to our input of our battery. This helps us protect us from shorting out our LDO and any DC-DC power converters of our board.
+<img width="1232" height="382" alt="image" src="https://github.com/user-attachments/assets/899f6893-f4bc-4f0a-a6c9-c995f54366d7" />
+
 
