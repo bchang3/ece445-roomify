@@ -33,6 +33,9 @@ Diagram of full hardware level diagram.
 
 ## 2026-02-11 
 ### Power Budgeting
+Another critical component of Roomify is the power subsystem and its ability to deliver enough power and current. The voltage regulator IC we chose for our microcontroller unit is the LT1170. This IC allows us to have a wide input voltage and an output of 3v3. Because Roomify will have two MCUs (one “main” MCU and one special MCU for controlling the touchscreen display, we will need around 2.4A to power both (assuming a peak current draw of 1.2A for an ESP32-S3). Roomify will drive at most three infrared LEDs at a time at 200mA pulses, requiring peak draw of 600mA. 
+
+Combining the current requirements for the MCUs and the IR LEDs gives a total budget of 3A. The rating for the LT1170 is 5A at 3v3. For our 12V system that powers our 3v3 system, it is required to output around 10 Watts. Our flyback converter can deliver up to 40 Watts of power, so we will have an ample amount of power for our system. Below is a simulation of our LT1170 component that delivers enough voltage and current.
 
 ### Repeater
 I was able to add a reverse protection PMOS circuit to our input of our battery. This helps us protect us from shorting out our LDO and any DC-DC power converters of our board.
