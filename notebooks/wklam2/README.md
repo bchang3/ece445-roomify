@@ -41,4 +41,6 @@ Combining the current requirements for the MCUs and the IR LEDs gives a total bu
 I was able to add a reverse protection NMOS circuit to our input of our battery. This helps us protect us from shorting out our LDO and any DC-DC power converters of our board.
 <img width="1232" height="382" alt="image" src="https://github.com/user-attachments/assets/899f6893-f4bc-4f0a-a6c9-c995f54366d7" />
 
+### Major Revision
+Revised the 12V line to be a 24V line. We realized that for a flyback transformer, the the ratios determined the sizing of our voltage step up and down. We want a 4:1:1 transformer, so that requires a 24V line. Since the LT1170 can handle input of up to 60V, a 24V input will not affect it.
 
