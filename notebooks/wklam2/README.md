@@ -54,7 +54,7 @@ Results when dropping cap values to reduce Q. Peaking went from 3V6 to around 3V
 
 ## 2026-02-13
 ### AC-DC 120VAC-24VDC Converter
-Simulation is competed and component selection 
-<img width="1346" height="660" alt="image" src="https://github.com/user-attachments/assets/9e74a0a7-d34f-4c66-82b4-a9d1e999fd2f" />\
-The tested configuration has the load low enough impedance to draw a large enough current so the converter can work smoothly. We designed it such that it has a 1A output at 24V giving us 24W to play with. This coveres our link budget.\
+Simulation is competed and component selection
+<img width="1133" height="444" alt="image" src="https://github.com/user-attachments/assets/2d2e63f1-63a6-4370-bf54-a0e50199bf43" />\
+The tested configuration has the load low enough impedance to draw a large enough current so the converter can work smoothly. We designed it such that it has a 0.8A output at 24V giving us 19W to play with. This coveres our link budget.\
 (NOTE: do NOT use a standard LTspice NMOS...)
