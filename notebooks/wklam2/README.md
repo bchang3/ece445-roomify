@@ -48,7 +48,13 @@ Revised the 12V line to be a 24V line. We realized that for a flyback transforme
 ### DC-DC 24V-3V3 Converter
 Simulation completed and component selection
 <img width="1324" height="356" alt="image" src="https://github.com/user-attachments/assets/5fa92049-1d99-4825-844d-e3f8bed1bdf0" />\
-Tested with a load of varying current to mirror a MCU with a varying load and current draw. Peaking at around 3V6 which is the rated maximum of our MCU. Might look into ways to reduce Q factor of our system as well as set a 3V3 limit with possible zener diode or others. Average steady state voltage of around 3V2.
+Tested with a load of varying current to mirror a MCU with a varying load and current draw. Peaking at around 3V6 which is the rated maximum of our MCU. Might look into ways to reduce Q factor of our system as well as set a 3V3 limit with possible TVS diode or others. Average steady state voltage of around 3V2.
 <img width="1329" height="357" alt="image" src="https://github.com/user-attachments/assets/123e5b28-2389-4337-beef-9bd510b1757e" />\
 Results when dropping cap values to reduce Q. Peaking went from 3V6 to around 3V4~3V5, but has much more ripple. Will adjust when design our board.
 
+## 2026-02-13
+### AC-DC 120VAC-24VDC Converter
+Simulation is competed and component selection 
+<img width="1346" height="660" alt="image" src="https://github.com/user-attachments/assets/9e74a0a7-d34f-4c66-82b4-a9d1e999fd2f" />\
+The tested configuration has the load low enough impedance to draw a large enough current so the converter can work smoothly. We designed it such that it has a 1A output at 24V giving us 24W to play with. This coveres our link budget.\
+(NOTE: do NOT use a standard LTspice NMOS...)
