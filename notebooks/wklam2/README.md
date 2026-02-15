@@ -65,5 +65,5 @@ The schematic for AC-DC 120VAC to 24VDC\
 <img width="1061" height="734" alt="image" src="https://github.com/user-attachments/assets/54a8f242-adc5-46b3-96a5-b6afd2b702e6" />
 ### DC-DC Schematic
 The schematic for the DC-DC 24VDC to 3V3DC
-<img width="1033" height="723" alt="image" src="https://github.com/user-attachments/assets/1be68894-d4e7-4893-a875-b636c7d497bc" />
+<img width="1029" height="705" alt="image" src="https://github.com/user-attachments/assets/1c728133-7f2a-4fa6-8355-d70f74045f69" />
 
