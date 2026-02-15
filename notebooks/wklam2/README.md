@@ -62,5 +62,5 @@ The tested configuration has the load low enough impedance to draw a large enoug
 ## 2026-02-14
 ### AC-DC Schematic
 The schematic for AC-DC 120VAC to 24VDC\
-<img width="1061" height="734" alt="image" src="https://github.com/user-attachments/assets/54a8f242-adc5-46b3-96a5-b6afd2b702e6" />\
+<img width="1061" height="734" alt="image" src="https://github.com/user-attachments/assets/54a8f242-adc5-46b3-96a5-b6afd2b702e6" />
 
