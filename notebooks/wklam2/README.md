@@ -58,3 +58,8 @@ Simulation is competed and component selection
 <img width="1133" height="444" alt="image" src="https://github.com/user-attachments/assets/2d2e63f1-63a6-4370-bf54-a0e50199bf43" />\
 The tested configuration has the load low enough impedance to draw a large enough current so the converter can work smoothly. We designed it such that it has a 0.8A output at 24V giving us 19W to play with. This coveres our link budget.\
 (NOTE: do NOT use a standard LTspice NMOS...)
+
+## 2026-02-14
+### AC-DC Schematic
+<img width="1061" height="734" alt="image" src="https://github.com/user-attachments/assets/54a8f242-adc5-46b3-96a5-b6afd2b702e6" />
+
