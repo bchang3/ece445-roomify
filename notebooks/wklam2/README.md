@@ -64,6 +64,7 @@ The tested configuration has the load low enough impedance to draw a large enoug
 The schematic for AC-DC 120VAC to 24VDC\
 <img width="1061" height="734" alt="image" src="https://github.com/user-attachments/assets/54a8f242-adc5-46b3-96a5-b6afd2b702e6" />
 ### DC-DC Schematic
-The schematic for the DC-DC 24VDC to 3V3DC
+The schematic for the DC-DC 24VDC to 3V3DC\
+Note: This converter is floating as ground is not tied to the actual GND. It acts as a high side switch and is bootstrapped.
 <img width="1054" height="715" alt="image" src="https://github.com/user-attachments/assets/53b906ae-3344-4abb-ade1-cfbdbcf4d65a" />
 
