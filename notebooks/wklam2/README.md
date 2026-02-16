@@ -68,3 +68,8 @@ The schematic for the DC-DC 24VDC to 3V3DC\
 Note: This converter is floating as ground is not tied to the actual GND. It acts as a high side switch and is bootstrapped.
 <img width="1054" height="715" alt="image" src="https://github.com/user-attachments/assets/53b906ae-3344-4abb-ade1-cfbdbcf4d65a" />
 
+## 2026-02-16
+MCU Schematic + IR LED
+<img width="1021" height="694" alt="image" src="https://github.com/user-attachments/assets/6e448447-1a50-4ab5-abb8-86b9438280dd" />
+<img width="1085" height="738" alt="image" src="https://github.com/user-attachments/assets/45f5eabe-2f1f-4a91-8e61-959ca510c10c" />
+
