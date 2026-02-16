@@ -66,7 +66,9 @@ The schematic for AC-DC 120VAC to 24VDC\
 ### DC-DC Schematic
 The schematic for the DC-DC 24VDC to 3V3DC\
 Note: This converter is floating as ground is not tied to the actual GND. It acts as a high side switch and is bootstrapped.
-<img width="1054" height="715" alt="image" src="https://github.com/user-attachments/assets/53b906ae-3344-4abb-ade1-cfbdbcf4d65a" />
+<img width="1054" height="715" alt="image" src="https://github.com/user-attachments/assets/53b906ae-3344-4abb-ade1-cfbdbcf4d65a" />\
+### Modification to Design
+After realizing that our AC-DC converter needs to be enclosed in a metal container for safety reasons for grounding, placing an antenna inside would be a poor decision. From here, we decided to split our power module into 2 separate boards and design each one differently. The AC-DC converter will be its own board and have its own container. From here, we can have a wire harness connect the 24VDC rail between our AC-DC and main Controller Unit. In the controller unit, we will be able to handle the 24V-3V3 Regulation easier without the worry of a farday cage enclosing our antenna.
 
 ## 2026-02-16
 MCU Schematic + IR LED
