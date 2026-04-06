@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <h1 className="text-3xl">
-      Hello world!
-    </h1>
-  )
+    <div className="min-h-screen mx-auto max-w-lg p-5">
+      <h1 className="text-black font-bold text-xl">ROOMIFY</h1>
+    </div>
+  );
 }
