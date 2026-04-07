@@ -36,41 +36,35 @@ def index():
 
 @app.get("/remotes/{board_serial}")
 async def get_remotes(board_serial: str = Path(..., description="Serial number of the board")):
-    try:
-        response = supabase.table("remotes").select("*").eq("board_serial", board_serial).execute()
-        response.raise_for_status()  # raise exception if Supabase returns error
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    response = supabase.table("remotes").select("*").eq("board_serial", board_serial).execute()
     
-    # response.data contains the list of remotes
+    if hasattr(response, "error") and response.error:
+        raise HTTPException(status_code=400, detail=response.error.message)
+    
     return {"board_serial": board_serial, "remotes": response.data}
 
 @app.post("/remotes")
 async def add_remote(remote: RemoteCreate):
-    try:
-        board_resp = supabase.table("boards").select("*").eq("serial_number", remote.board_serial).execute()
-        board_resp.raise_for_status()
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error checking board: {e}")
+    board_resp = supabase.table("boards").select("*").eq("serial_number", remote.board_serial).execute()
     
-
+    if hasattr(board_resp, "error") and board_resp.error:
+        raise HTTPException(status_code=400, detail=f"Error checking board: {board_resp.error.message}")
+    
     if not board_resp.data:
-        try:
-            insert_board_resp = supabase.table("boards").insert({
-                "serial_number": remote.board_serial
-            }).execute()
-            insert_board_resp.raise_for_status()
-        except Exception as e:
-            raise HTTPException(status_code=400, detail=f"Error inserting board: {e}")
-
-    try:
-        response = supabase.table("remotes").insert({
-            "name": remote.name,
-            "device_type": remote.device_type.value,
-            "board_serial": remote.board_serial
+        insert_board_resp = supabase.table("boards").insert({
+            "serial_number": remote.board_serial
         }).execute()
-        response.raise_for_status()
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error inserting remote: {e}")
+        
+        if insert_board_resp.error:
+            raise HTTPException(status_code=400, detail=f"Error inserting board: {insert_board_resp.error.message}")
+
+    response = supabase.table("remotes").insert({
+        "name": remote.name,
+        "device_type": remote.device_type.value,
+        "board_serial": remote.board_serial
+    }).execute()
+    
+    if hasattr(response, "error") and response.error:
+        raise HTTPException(status_code=400, detail=f"Error inserting remote: {response.error.message}")
     
     return {"message": "Remote added successfully", "data": response.data}
