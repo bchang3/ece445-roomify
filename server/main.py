@@ -30,7 +30,7 @@ class RemoteCreate(BaseModel):
     name: str
     device_type: DeviceType
 
-@app.route('/')
+@app.get('/')
 def index():
     return "Roomify server is running."
 
