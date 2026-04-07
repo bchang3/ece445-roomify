@@ -1,4 +1,4 @@
-export type DeviceType = 'TV' | 'AC' | 'PROJECTOR' | 'LIGHT';
+export type DeviceType = "TV" | "AC" | "PROJECTOR" | "LIGHT";
 
 export interface Remote {
   id: string;

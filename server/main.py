@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from supabase import create_client, Client
 import os
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 
 load_dotenv()
@@ -19,6 +20,17 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 app = FastAPI(title="Roomify API")
 
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # or ["*"] for testing
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Enum for device type
 class DeviceType(str, Enum):
     lights = "lights"
@@ -29,6 +41,11 @@ class DeviceType(str, Enum):
 class RemoteCreate(BaseModel):
     name: str
     device_type: DeviceType
+
+class TriggerRequest(BaseModel):
+    board_serial: str
+    command: str
+
 
 @app.get('/')
 def index():
@@ -86,3 +103,30 @@ async def get_buttons(remote_id: str = Path(..., description="UUID of the remote
         "remote_id": remote_id,
         "buttons": response.data
     }
+
+@app.get("/commands/{board_serial}")
+async def get_commands(board_serial: str):
+    resp = supabase.table("commands") \
+        .select("*") \
+        .eq("board_serial", board_serial) \
+        .eq("status", "pending") \
+        .execute()
+    
+    return resp.data
+
+@app.post("/trigger")
+async def trigger(req: TriggerRequest):
+    response = supabase.table("commands").insert({
+        "board_serial": req.board_serial,
+        "command": req.command,
+        "status": "pending"
+    }).execute()
+
+    return {"message": "Command queued", "data": response.data}
+
+@app.post("/commands/{id}/complete")
+async def complete_command(id: str):
+    supabase.table("commands") \
+        .update({"status": "done"}) \
+        .eq("id", id) \
+        .execute()
