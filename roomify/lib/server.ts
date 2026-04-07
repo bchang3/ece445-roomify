@@ -33,6 +33,7 @@ export async function getRemotes(boardSerial: string): Promise<Remote[]> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL!}/remotes/${boardSerial}`,
+      { cache: "no-store" },
     );
 
     if (!res.ok) {
@@ -55,6 +56,7 @@ export async function getButtons(remoteId: string): Promise<RemoteButton[]> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL!}/buttons/${remoteId}`,
+      { cache: "no-store" },
     );
 
     if (!res.ok) {
