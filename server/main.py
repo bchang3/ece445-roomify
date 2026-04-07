@@ -36,10 +36,22 @@ def index():
 
 @app.post("/add_remote")
 async def add_remote(remote: RemoteCreate):
-    # Insert into Supabase
+
+    board_resp = supabase.table("boards").select("*").eq("serial_number", remote.board_serial).execute()
+    if board_resp.error:
+        raise HTTPException(status_code=400, detail=board_resp.error.message)
+    
+    if not board_resp.data: 
+        insert_board_resp = supabase.table("boards").insert({
+            "serial_number": remote.board_serial
+        }).execute()
+        if insert_board_resp.error:
+            raise HTTPException(status_code=400, detail=insert_board_resp.error.message)
+
     response = supabase.table("remotes").insert({
         "name": remote.name,
-        "device_type": remote.device_type.value
+        "device_type": remote.device_type.value,
+        "board_serial": remote.board_serial
     }).execute()
     
     if response.error:
