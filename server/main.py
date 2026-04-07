@@ -68,3 +68,21 @@ async def add_remote(remote: RemoteCreate):
         raise HTTPException(status_code=400, detail=f"Error inserting remote: {response.error.message}")
     
     return {"message": "Remote added successfully", "data": response.data}
+
+@app.get("/buttons/{remote_id}")
+async def get_buttons(remote_id: str = Path(..., description="UUID of the remote")):
+    response = supabase.table("buttons") \
+        .select("*") \
+        .eq("remote_id", remote_id) \
+        .execute()
+    
+    if hasattr(response, "error") and response.error:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Database error: {response.error.message}"
+        )
+    
+    return {
+        "remote_id": remote_id,
+        "buttons": response.data
+    }
