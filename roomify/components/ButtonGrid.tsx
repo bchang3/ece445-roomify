@@ -10,7 +10,7 @@ export default function ButtonGrid({ buttons }: { buttons: RemoteButton[] }) {
     setLoading(btn.id);
     try {
       //FIXME
-      pressButton("917a595fba5dba86", btn.id);
+      pressButton("917a595fba5dba86", btn.command);
     } catch (err) {
       console.error(err);
     } finally {
