@@ -1,5 +1,5 @@
 from enum import Enum
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Path
 from pydantic import BaseModel
 from supabase import create_client, Client
 import os
@@ -34,7 +34,16 @@ class RemoteCreate(BaseModel):
 def index():
     return "Roomify server is running."
 
-@app.post("/add_remote")
+@app.get("/remotes/{board_serial}")
+async def get_remotes(board_serial: str = Path(..., description="Serial number of the board")):
+    response = supabase.table("remotes").select("*").eq("board_serial", board_serial).execute()
+    
+    if response.error:
+        raise HTTPException(status_code=400, detail=response.error.message)
+    
+    return {"board_serial": board_serial, "remotes": response.data}
+
+@app.post("/remotes")
 async def add_remote(remote: RemoteCreate):
 
     board_resp = supabase.table("boards").select("*").eq("serial_number", remote.board_serial).execute()
