@@ -30,6 +30,10 @@ class RemoteCreate(BaseModel):
     name: str
     device_type: DeviceType
 
+@app.route('/')
+def index():
+    return "Roomify server is running."
+
 @app.post("/add_remote")
 async def add_remote(remote: RemoteCreate):
     # Insert into Supabase
