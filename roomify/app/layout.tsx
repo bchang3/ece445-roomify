@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Roomify App",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
