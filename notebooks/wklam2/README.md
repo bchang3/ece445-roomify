@@ -105,12 +105,36 @@ Worked on MCU Layout for all IR Repeaters
 Added ability for power via 24V rail and USB-C at 5V
 
 ## 2026-03-20
-Worked on AC-DC Layout
+### Worked on AC-DC Layout
 <img width="581" height="693" alt="image" src="https://github.com/user-attachments/assets/99030414-38e2-4101-94be-4a6d8b5ee430" />
 
 ## 2026-03-27
-Soldering
+### Soldering
 Soldered on the MCU for both IR repeater and MCU
 <img width="582" height="761" alt="image" src="https://github.com/user-attachments/assets/db8fed95-77b4-4afc-add9-4c5e31b6bb8d" />
 
+## 2026-04-02
+### Soldering
+Added power componenets to repeater board and MCU board
+<img width="407" height="685" alt="image" src="https://github.com/user-attachments/assets/b903c6fd-4d58-4a82-9a63-0362ab0a15ac" />
 
+## 2026-04-06
+### Soldering
+Components added with USB-C capabililities
+<img width="485" height="725" alt="image" src="https://github.com/user-attachments/assets/c98a34a7-a91f-4f98-a66a-91e13c7d0991" />
+
+## 2026-04-08
+### Debug
+DC-DC buck converter issue on 9V for battery for IR Repeater
+<img width="583" height="542" alt="image" src="https://github.com/user-attachments/assets/d728b0a8-2a04-4c87-ad51-2ad3b026aa79" />
+Resulted in large spike when the power is turned on, causes large transient. Needed to add TVS diode for 3v3 protection.
+
+## 2026-04-10
+## Solder
+AC-DC Soldering
+<img width="535" height="593" alt="image" src="https://github.com/user-attachments/assets/c3a4e684-8aa2-4e22-ae91-109174c87f36" />
+
+## 2026-04-15
+## AC-DC Validation
+Test with 2V output from AC-DC converter
+<img width="466" height="599" alt="image" src="https://github.com/user-attachments/assets/81218c92-87a0-4fc4-9452-dd72c4efd96f" />
