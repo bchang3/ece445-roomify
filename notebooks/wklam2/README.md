@@ -87,13 +87,30 @@ Worked on PCB Layout for both the IR repeater and AC-DC. In the IR Repeater layo
 On AC-DC layout, worked on Isolation between the VOUT and VIN sections.
 
 ## 2026-03-05
-## Layout
+### Layout
 Worked on PCB layout for MCU board as well as the AC-DC PSU. On the AC-DC PSU, recreated the LT Spice simulations to include the effects of the NTC at start as well as operation period. 
 <img width="736" height="308" alt="image" src="https://github.com/user-attachments/assets/fa68938d-7fb3-47b5-8523-b96ea78f799f" />
 With the addition of the resistor at the input, was able to monitor the RC and if any ringing was occuring during the start up phase. On the PCB Layout for MCU, began routing the USB as well as the connections between each IR Led.
 
 ## 2026-03-10
-## MCU Board
+### MCU Board
 On the MCU board, I added capabilities for over 14 IR LED to be controlled. This will give us the ability to select different locations as each IR LED has a very direct field and scope. 
 <img width="950" height="674" alt="image" src="https://github.com/user-attachments/assets/fd4a71e1-25e7-48b9-9993-29d8df92621d" />
 Now, the board has ability to select each different IR LED based off of location and a software mapping.
+
+## 2026-03-13
+### Layout 
+Worked on MCU Layout for all IR Repeaters
+<img width="717" height="704" alt="image" src="https://github.com/user-attachments/assets/0ddcb770-8928-4c0a-b37b-2ce331afc2a1" />
+Added ability for power via 24V rail and USB-C at 5V
+
+## 2026-03-20
+Worked on AC-DC Layout
+<img width="581" height="693" alt="image" src="https://github.com/user-attachments/assets/99030414-38e2-4101-94be-4a6d8b5ee430" />
+
+## 2026-03-27
+Soldering
+Soldered on the MCU for both IR repeater and MCU
+<img width="582" height="761" alt="image" src="https://github.com/user-attachments/assets/db8fed95-77b4-4afc-add9-4c5e31b6bb8d" />
+
+
