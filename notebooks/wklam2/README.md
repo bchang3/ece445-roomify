@@ -52,14 +52,14 @@ Tested with a load of varying current to mirror a MCU with a varying load and cu
 <img width="1329" height="357" alt="image" src="https://github.com/user-attachments/assets/123e5b28-2389-4337-beef-9bd510b1757e" />\
 Results when dropping cap values to reduce Q. Peaking went from 3V6 to around 3V4~3V5, but has much more ripple. Will adjust when design our board.
 
-## 2026-02-13
+## 2026-02-15
 ### AC-DC 120VAC-24VDC Converter
 Simulation is competed and component selection
 <img width="1133" height="444" alt="image" src="https://github.com/user-attachments/assets/2d2e63f1-63a6-4370-bf54-a0e50199bf43" />\
 The tested configuration has the load low enough impedance to draw a large enough current so the converter can work smoothly. We designed it such that it has a 0.8A output at 24V giving us 19W to play with. This coveres our link budget.\
 (NOTE: do NOT use a standard LTspice NMOS...)
 
-## 2026-02-14
+## 2026-02-17
 ### AC-DC Schematic
 The schematic for AC-DC 120VAC to 24VDC\
 <img width="1061" height="734" alt="image" src="https://github.com/user-attachments/assets/54a8f242-adc5-46b3-96a5-b6afd2b702e6" />
@@ -70,8 +70,18 @@ Note: This converter is floating as ground is not tied to the actual GND. It act
 ### Modification to Design
 After realizing that our AC-DC converter needs to be enclosed in a metal container for safety reasons for grounding, placing an antenna inside would be a poor decision. From here, we decided to split our power module into 2 separate boards and design each one differently. The AC-DC converter will be its own board and have its own container. From here, we can have a wire harness connect the 24VDC rail between our AC-DC and main Controller Unit. In the controller unit, we will be able to handle the 24V-3V3 Regulation easier without the worry of a farday cage enclosing our antenna.
 
-## 2026-02-16
+## 2026-02-20
 MCU Schematic + IR LED
 <img width="1021" height="694" alt="image" src="https://github.com/user-attachments/assets/6e448447-1a50-4ab5-abb8-86b9438280dd" />
 <img width="1085" height="738" alt="image" src="https://github.com/user-attachments/assets/45f5eabe-2f1f-4a91-8e61-959ca510c10c" />
 
+## 2026-02-25
+### AC-DC 
+To revise our AC-DC PSU to fit the requirements, we were able to add a soft start to the device so that the capacitor would not blow up with a large amount of current inrush. To do so, we added an NTC at the input to increase the resistance that would go to our C1 and C2. In addition to this, we added a fuse to limit the amount of current that would go into the system.
+<img width="378" height="267" alt="image" src="https://github.com/user-attachments/assets/b5e18a67-d21f-4a01-86cc-31fa04ea64f4" />
+
+## 2026-03-01
+### AC-DC 
+Worked on PCB Layout for both the IR repeater and AC-DC. In the IR Repeater layout, focused on having the ability to create a good GND reference layer for the USB signal
+<img width="679" height="470" alt="image" src="https://github.com/user-attachments/assets/df3018e2-67c4-48e6-8285-5b65726f2521" />
+On AC-DC layout, worked on Isolation between the VOUT and VIN sections.
