@@ -1,74 +1,75 @@
 import { cookies } from "next/headers";
-import { getRemotes, getSpotifyPlaylists } from "@/lib/server";
-import RemoteList from "@/components/RemoteList";
-import AddRemoteButton from "@/components/AddRemoteButton";
-import AddSpotifyButton from "@/components/AddSpotifyButton";
-import SpotifyPlaylistItem from "@/components/SpotifyPlaylistItem";
+import { getSpotifyPlaylists } from "@/lib/server";
+import { supabase } from "@/lib/supabase";
+import PresetsList from "@/components/PresetsList";
+import AddPresetButton from "@/components/AddPresetButton";
+import Link from "next/link";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export default async function Home() {
+const BOARD_SERIAL = "917a595fba5dba86";
+
+async function getButtons() {
+
+  const { data } = await supabase
+    .from("buttons")
+    .select("id, name, command, remote_id, remotes(name)")
+    .order("name");
+  return data ?? [];
+}
+
+async function getPresets() {
+
+  const { data } = await supabase
+    .from("presets")
+    .select("*")
+    .eq("board_serial", BOARD_SERIAL)
+    .order("created_at", { ascending: false });
+  return data ?? [];
+}
+
+export default async function PresetsPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("spotify_token")?.value;
 
-  const [playlistsResult, remotes] = await Promise.all([
-    getSpotifyPlaylists(token),
-    getRemotes("917a595fba5dba86"),
+  const [playlists, buttons, presets] = await Promise.all([
+    getSpotifyPlaylists(token).then((r) => r ?? []),
+    getButtons(),
+    getPresets(),
   ]);
-
-  const isLoggedIn = !!token;
-  const isTokenExpired = playlistsResult === null;
-  const playlists = playlistsResult ?? [];
 
   return (
     <div className="min-h-screen mx-auto max-w-lg w-full p-4 bg-[#F8F8F8] flex flex-col gap-4">
       
       {/* HEADER */}
       <div className="flex items-center justify-between py-2 px-2 border-b border-gray-100 relative">
+        <Link href="/" className="text-gray-400 hover:text-gray-600 text-sm">
+          <div className="flex gap-2">
+            <ArrowLeftIcon className="w-5 h-5" />
+            <div>Back</div>
+          </div>
+        </Link>
+
         <div className="w-6" />
 
         <h1 className="absolute left-1/2 -translate-x-1/2 text-[#B22222] font-bold tracking-[0.2em] text-lg uppercase">
           Roomify
         </h1>
 
-        <div className="flex gap-2">
-          <AddSpotifyButton />
-          <AddRemoteButton />
-        </div>
+        <AddPresetButton
+          buttons={buttons}
+          playlists={playlists}
+          boardSerial={BOARD_SERIAL}
+          token={token ?? null}
+        />
       </div>
 
       {/* CONTENT */}
       <div className="flex flex-col gap-6 flex-1">
-        
-        {/* REMOTES */}
-        <div className="p-2">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">Your Devices</h2>
-          <RemoteList remotes={remotes} />
-        </div>
-
-        {/* SPOTIFY */}
         <div className="p-2">
           <h2 className="text-lg font-bold text-gray-900 mb-3">
-            Your Spotify Playlists
+            Presets
           </h2>
-
-          {!isLoggedIn && (
-            <div className="mt-2 p-3 bg-white border rounded-md text-sm text-gray-500">
-              Connect Spotify to view playlists.
-            </div>
-          )}
-
-          {isLoggedIn && isTokenExpired && (
-            <div className="mt-2 p-3 bg-white border border-red-200 rounded-md text-sm text-red-500">
-              Spotify session expired. Reconnect.
-            </div>
-          )}
-
-          {isLoggedIn && !isTokenExpired && (
-            <div className="max-h-[420px] overflow-y-auto space-y-3 pr-1">
-              {playlists.map((p: any) => (
-                <SpotifyPlaylistItem key={p.id} playlist={p} token={token!} />
-              ))}
-            </div>
-          )}
+          <PresetsList presets={presets} buttons={buttons} />
         </div>
       </div>
 

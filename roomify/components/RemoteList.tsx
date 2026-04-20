@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { Remote } from "@/lib/types";
 import {
   TvIcon,
@@ -24,8 +23,6 @@ const DeviceIcon = ({ type }: { type: string }) => {
 };
 
 export default function RemoteList({ remotes }: { remotes: Remote[] }) {
-  const router = useRouter();
-
   if (remotes.length === 0) {
     return (
       <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-3xl">
