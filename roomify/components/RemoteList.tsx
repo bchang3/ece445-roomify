@@ -7,6 +7,7 @@ import {
   CpuChipIcon,
   CommandLineIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 // Helper to get the correct icon based on device_type enum
 const DeviceIcon = ({ type }: { type: string }) => {
@@ -36,9 +37,9 @@ export default function RemoteList({ remotes }: { remotes: Remote[] }) {
   return (
     <div className="grid gap-4">
       {remotes.map((remote) => (
-        <div
+        <Link
           key={remote.id}
-          onClick={() => router.push(`/remote/${remote.id}`)}
+          href={`/remote/${remote.id}`}
           className="group relative bg-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer border border-transparent hover:border-red-100 flex items-center justify-between"
         >
           <div className="flex items-center gap-4">
@@ -48,7 +49,7 @@ export default function RemoteList({ remotes }: { remotes: Remote[] }) {
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900">{remote.name}</h3>
+              <h3 className="font-semibold text-gray-900 text-left">{remote.name}</h3>
               <p className="text-xs text-gray-400 uppercase tracking-wider">
                 {remote.device_type} • {remote.board_serial}
               </p>
@@ -71,7 +72,7 @@ export default function RemoteList({ remotes }: { remotes: Remote[] }) {
               />
             </svg>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
