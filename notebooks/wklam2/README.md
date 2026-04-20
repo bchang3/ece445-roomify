@@ -130,11 +130,11 @@ DC-DC buck converter issue on 9V for battery for IR Repeater
 Resulted in large spike when the power is turned on, causes large transient. Needed to add TVS diode for 3v3 protection.
 
 ## 2026-04-10
-## Solder
+### Solder
 AC-DC Soldering
 <img width="535" height="593" alt="image" src="https://github.com/user-attachments/assets/c3a4e684-8aa2-4e22-ae91-109174c87f36" />
 
 ## 2026-04-15
-## AC-DC Validation
+### AC-DC Validation
 Test with 2V output from AC-DC converter
 <img width="466" height="599" alt="image" src="https://github.com/user-attachments/assets/81218c92-87a0-4fc4-9452-dd72c4efd96f" />
