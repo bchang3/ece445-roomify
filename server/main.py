@@ -44,6 +44,7 @@ class RemoteCreate(BaseModel):
 
 class TriggerRequest(BaseModel):
     board_serial: str
+    device_header: str
     command: str
 
 
