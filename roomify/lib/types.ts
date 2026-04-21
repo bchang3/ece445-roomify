@@ -4,6 +4,7 @@ export interface Remote {
   id: string;
   name: string;
   device_type: DeviceType;
+  device_header: string;
   board_serial: string;
 }
 

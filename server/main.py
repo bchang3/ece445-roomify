@@ -118,6 +118,7 @@ async def get_commands(board_serial: str):
 async def trigger(req: TriggerRequest):
     response = supabase.table("commands").insert({
         "board_serial": req.board_serial,
+        "device_header": req.device_header,
         "command": req.command,
         "status": "pending"
     }).execute()

@@ -1,6 +1,6 @@
 import { Remote, RemoteButton } from "./types";
 
-export async function pressButton(boardSerial: string, command: string) {
+export async function pressButton(boardSerial: string, device_header: string, command: string) {
   if (!boardSerial || !command) return;
 
   try {
@@ -11,6 +11,7 @@ export async function pressButton(boardSerial: string, command: string) {
       },
       body: JSON.stringify({
         board_serial: boardSerial,
+        device_header: device_header,
         command: command,
       }),
     });
