@@ -55,12 +55,12 @@ export default async function PresetsPage() {
           Roomify
         </h1>
 
-        <AddPresetButton
+        {/* <AddPresetButton
           buttons={buttons}
           playlists={playlists}
           boardSerial={BOARD_SERIAL}
           token={token ?? null}
-        />
+        /> */}
       </div>
 
       {/* CONTENT */}
@@ -69,7 +69,8 @@ export default async function PresetsPage() {
           <h2 className="text-lg font-bold text-gray-900 mb-3">
             Presets
           </h2>
-          <PresetsList presets={presets} buttons={buttons} />
+          {/* //FIXME */}
+          <PresetsList presets={presets} buttons={[]} />
         </div>
       </div>
 

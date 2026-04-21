@@ -11,14 +11,14 @@ type Preset = {
   button_ids: string[];
 };
 
-type Button = {
+export type PresetButton = {
   id: string;
   name: string;
   command: string;
   remotes: { name: string } | null;
 };
 
-type Props = { presets: Preset[]; buttons: Button[] };
+type Props = { presets: Preset[]; buttons: PresetButton[] };
 
 export default function PresetsList({ presets: initial, buttons }: Props) {
   const [presets, setPresets] = useState(initial);

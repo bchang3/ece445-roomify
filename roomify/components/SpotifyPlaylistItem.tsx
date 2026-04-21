@@ -74,7 +74,7 @@ export default function SpotifyPlaylistItem({ playlist, token }: Props) {
   }
 
   function play(e: React.MouseEvent) {
-    window.alert("Add code to play playlist", e);
+    console.log(e);
   }
 
   return (
