@@ -138,3 +138,10 @@ AC-DC Soldering
 ### AC-DC Validation
 Test with 2V output from AC-DC converter
 <img width="466" height="599" alt="image" src="https://github.com/user-attachments/assets/81218c92-87a0-4fc4-9452-dd72c4efd96f" />
+
+## 2026-04-21
+### IR Testing
+We tested the transmit power of our IR LED and ran into a huge problem of the range. When transmitting the signal with WiFi capabilities, the range decreases to around 10 inches of range, but when the transmission is done with a hard-coded value, it can transmit for a few feet. This caused us to narrow down the issue to the MCU itself and the compute power. It is fighiting for compute power for the WiFi POST requests to our API while also transmitting a signal at 38kHz. This causes the signal to not be sent well.
+
+### Hardware Modifications
+Added 100uF capacitors next to each 3v3 rail that will be transmitting IR signals. This is to help mitigate the dropping of any power when transmitting signals as each pulse pulls around 1A so it can cause brown out in our voltage if not properly addressed.
