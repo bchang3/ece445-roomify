@@ -41,6 +41,7 @@ class DeviceType(str, Enum):
 class RemoteCreate(BaseModel):
     name: str
     device_type: DeviceType
+    board_serial: str
 
 class TriggerRequest(BaseModel):
     board_serial: str
@@ -60,6 +61,16 @@ async def get_remotes(board_serial: str = Path(..., description="Serial number o
         raise HTTPException(status_code=400, detail=response.error.message)
     
     return {"board_serial": board_serial, "remotes": response.data}
+
+@app.get("/presets/{board_serial}")
+async def get_presets(board_serial: str = Path(..., description="Serial number of the board")):
+    response = supabase.table("presets").select("*").eq("board_serial", board_serial).execute()
+    
+    if hasattr(response, "error") and response.error:
+        raise HTTPException(status_code=400, detail=response.error.message)
+    
+    return {"board_serial": board_serial, "presets": response.data}
+
 
 @app.post("/remotes")
 async def add_remote(remote: RemoteCreate):
