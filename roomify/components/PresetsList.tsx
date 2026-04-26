@@ -128,7 +128,7 @@ export default function PresetsList({ presets: initial, accessToken }: Props) {
               handleDeletePreset(preset.id);
             }}
             disabled={deleting === preset.id}
-            className="px-3 text-gray-300 hover:text-red-400 transition text-xl"
+            className="px-3 text-gray-300 hover:text-red-400 transition text-xl self-start"
           >
             ×
           </button>
