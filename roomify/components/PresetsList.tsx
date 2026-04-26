@@ -62,7 +62,7 @@ export default function PresetsList({ presets: initial, accessToken }: Props) {
         <div
           key={preset.id}
           onClick={() =>
-            playPreset(preset.id, "917a595fba5dba86", accessToken)
+            playPreset(preset.id, "917a595fba5dba86")
           }
           className="group flex bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-transparent hover:border-red-100 overflow-hidden"
         >

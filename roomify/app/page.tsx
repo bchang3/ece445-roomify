@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { getRemotes, getSpotifyPlaylists } from "@/lib/server";
 import RemoteList from "@/components/RemoteList";
 import AddRemoteButton from "@/components/AddRemoteButton";
@@ -7,15 +6,15 @@ import ConnectSpotify from "@/components/ConnectSpotify";
 import { SpotifyPlaylist } from "@/lib/types";
 
 export default async function Home() {
-  const cookieStore = await cookies();
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  const res = await fetch(`${baseUrl}/api/spotify/token`, {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
+const res = await fetch(
+  `${baseUrl}/api/spotify/token?board_serial=917a595fba5dba86`,
+  {
     cache: "no-store",
-  });
+  }
+);
 
   const data = await res.json();
 

@@ -6,7 +6,8 @@ import os
 import spotipy
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-
+import time
+import requests
 
 load_dotenv()
 
@@ -54,7 +55,66 @@ class PlayPlaylistRequest(BaseModel):
 class PlayPresetRequest(BaseModel):
     preset_id: str
     board_serial: str
-    access_token: str 
+
+def refresh_spotify_token(refresh_token: str):
+    res = requests.post(
+        "https://accounts.spotify.com/api/token",
+        data={
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+            "client_id": os.environ["SPOTIFY_CLIENT_ID"],
+            "client_secret": os.environ["SPOTIFY_CLIENT_SECRET"],
+        },
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+    )
+
+    if res.status_code != 200:
+        raise Exception(f"Failed to refresh token: {res.text}")
+
+    data = res.json()
+
+    return {
+        "access_token": data["access_token"],
+        "refresh_token": data.get("refresh_token"),  # may or may not be returned
+        "expires_at": int(time.time() * 1000) + (data["expires_in"] * 1000),
+    }
+
+def get_valid_spotify_token(supabase, board_serial: str):
+    token_res = supabase.table("spotify_connections") \
+        .select("access_token, refresh_token, expires_at") \
+        .eq("board_serial", board_serial) \
+        .single() \
+        .execute()
+
+    if not token_res.data:
+        raise Exception("Missing Spotify connection")
+
+    tokens = token_res.data
+
+    # If still valid (> 1 min buffer)
+    if tokens["expires_at"] > int(time.time() * 1000) + 60000:
+        return tokens
+
+    # Otherwise refresh
+    updated = refresh_spotify_token(tokens["refresh_token"])
+
+    # persist update
+    supabase.table("spotify_connections") \
+        .update({
+            "access_token": updated["access_token"],
+            "refresh_token": updated.get("refresh_token", tokens["refresh_token"]),
+            "expires_at": updated["expires_at"],
+        }) \
+        .eq("board_serial", board_serial) \
+        .execute()
+
+    return {
+        "access_token": updated["access_token"],
+        "refresh_token": updated.get("refresh_token", tokens["refresh_token"]),
+        "expires_at": updated["expires_at"],
+    }
 
 @app.get('/')
 def index():
@@ -101,21 +161,25 @@ async def play_preset(req: PlayPresetRequest):
 
     buttons = buttons_res.data or []
 
-    try: 
-      if playlist_uri:
-          sp = spotipy.Spotify(auth=req.access_token)
-          sp.start_playback(context_uri=playlist_uri)
+    try:
+        token_data = get_valid_spotify_token(supabase, req.board_serial)
+        access_token = token_data["access_token"]
 
-      queued = []
+        if playlist_uri:
+            sp = spotipy.Spotify(auth=access_token)
+            sp.start_playback(context_uri=playlist_uri)
 
-      for btn in buttons:
-          res = supabase.table("commands").insert({
-              "board_serial": req.board_serial,
-              "device_header": btn["device_header"],
-              "command": btn["command"],
-              "status": "pending"
-          }).execute()
-          queued.append(res.data)
+        queued = []
+
+        for btn in buttons:
+            res = supabase.table("commands").insert({
+                "board_serial": req.board_serial,
+                "device_header": btn["device_header"],
+                "command": btn["command"],
+                "status": "pending"
+            }).execute()
+
+            queued.append(res.data)
 
     except spotipy.SpotifyException as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -127,8 +191,6 @@ async def play_preset(req: PlayPresetRequest):
         "playlist_uri": playlist_uri,
         "commands_queued": len(queued)
     }
-
-
 @app.post("/remotes")
 async def add_remote(remote: RemoteCreate):
     board_resp = supabase.table("boards").select("*").eq("serial_number", remote.board_serial).execute()

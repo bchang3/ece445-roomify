@@ -1,63 +1,70 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { getValidSpotifyToken } from "@/lib/server";
+import { supabase } from "@/lib/supabase";
 
-export async function GET() {
-  const cookieStore = await cookies();
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const board_serial = searchParams.get("board_serial");
 
-  const accessToken = cookieStore.get("spotify_token")?.value;
-  const refreshToken = cookieStore.get("spotify_refresh_token")?.value;
-  const expiresAt = Number(cookieStore.get("spotify_expires_at")?.value);
+  if (!board_serial) {
+    return NextResponse.json(
+      { error: "Missing board_serial" },
+      { status: 400 }
+    );
+  }
 
-  if (!accessToken || !refreshToken || !expiresAt) {
+  const { data, error } = await supabase
+    .from("spotify_connections")
+    .select("access_token, refresh_token, expires_at")
+    .eq("board_serial", board_serial)
+    .single();
+
+  if (error || !data) {
     return NextResponse.json(
       { error: "Missing Spotify tokens" },
-      { status: 401 },
+      { status: 401 }
     );
   }
 
   try {
     const updated = await getValidSpotifyToken({
-      accessToken,
-      refreshToken,
-      expiresAt,
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      expiresAt: data.expires_at,
     });
 
-    const res = NextResponse.json({
-      access_token: updated.accessToken,
-    });
+    const accessTokenChanged =
+      updated.accessToken !== data.access_token;
+    const refreshTokenChanged =
+      updated.refreshToken !== data.refresh_token;
+    const expiresChanged =
+      updated.expiresAt !== data.expires_at;
 
-    if (
-      updated.accessToken !== accessToken ||
-      updated.refreshToken !== refreshToken ||
-      updated.expiresAt !== expiresAt
-    ) {
-      res.cookies.set("spotify_token", updated.accessToken, {
-        httpOnly: true,
-        path: "/",
-        sameSite: "lax",
-      });
+    // persist updates if needed
+    if (accessTokenChanged || refreshTokenChanged || expiresChanged) {
+      const { error: updateError } = await supabase
+        .from("spotify_connections")
+        .update({
+          access_token: updated.accessToken,
+          refresh_token: updated.refreshToken,
+          expires_at: updated.expiresAt,
+        })
+        .eq("board_serial", board_serial);
 
-      res.cookies.set("spotify_refresh_token", updated.refreshToken, {
-        httpOnly: true,
-        path: "/",
-        sameSite: "lax",
-      });
-
-      res.cookies.set("spotify_expires_at", updated.expiresAt.toString(), {
-        httpOnly: true,
-        path: "/",
-        sameSite: "lax",
-      });
+      if (updateError) {
+        console.error("Failed to update tokens:", updateError);
+      }
     }
 
-    return res;
+    return NextResponse.json({
+      access_token: updated.accessToken,
+    });
   } catch (err) {
     console.error("Token refresh failed:", err);
 
     return NextResponse.json(
       { error: "Failed to refresh token" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

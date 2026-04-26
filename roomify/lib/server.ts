@@ -119,13 +119,10 @@ export async function playPlaylist(accessToken: string, playlistUri: string) {
 export async function playPreset(
   presetId: string,
   boardSerial: string,
-  accessToken: string,
 ) {
-  console.log("PLAYING PRESET", presetId, boardSerial, accessToken);
-  if (!presetId || !boardSerial || !accessToken) return;
+  if (!presetId || !boardSerial) return;
 
   try {
-    console.log("making request");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL!}/presets/play`,
       {
@@ -136,7 +133,6 @@ export async function playPreset(
         body: JSON.stringify({
           preset_id: presetId,
           board_serial: boardSerial,
-          access_token: accessToken,
         }),
       },
     );
