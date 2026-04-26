@@ -58,7 +58,7 @@ export default async function Home() {
           {isLoggedIn && !isTokenExpired && (
             <div className="max-h-105 grid grid-cols-3 gap-2 overflow-y-auto space-y-3 pr-1">
               {playlists.map((p: any) => (
-                <SpotifyPlaylistItem key={p.id} playlist={p} />
+                <SpotifyPlaylistItem key={p.id} playlist={p} token={token} />
               ))}
             </div>
           )}

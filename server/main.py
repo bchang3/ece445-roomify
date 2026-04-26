@@ -156,7 +156,7 @@ async def play_playlist(payload: PlayPlaylistRequest):
         return {
             "success": True,
             "message": "Playback started",
-            "playlist": payload.playlist_id,
+            "playlist": payload.playlist_uri,
         }
 
     except spotipy.SpotifyException as e:

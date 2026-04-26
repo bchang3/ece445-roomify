@@ -1,5 +1,38 @@
 import { Remote, RemoteButton } from "./types";
 
+export async function playPlaylist(
+  accessToken: string,
+  playlistUri: string,
+) {
+  if (!accessToken || !playlistUri) return;
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL!}/playlists/play`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_token: accessToken,
+          playlist_uri: playlistUri,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Error playing playlist:", text);
+      throw new Error(`Failed to play playlist: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("playPlaylist error:", err);
+  }
+}
+
 export async function pressButton(
   boardSerial: string,
   device_header: string,

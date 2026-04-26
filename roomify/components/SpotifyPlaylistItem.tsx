@@ -2,15 +2,18 @@
 
 import Image from "next/image";
 import { PlayIcon } from "@heroicons/react/16/solid";
+import { playPlaylist } from "@/lib/server";
 
 type Props = {
   playlist: any;
+  token: string;
 };
 
-export default function SpotifyPlaylistItem({ playlist }: Props) {
+export default function SpotifyPlaylistItem({ playlist, token }: Props) {
   const image = playlist.images?.[0]?.url;
 
   function play(e: React.MouseEvent) {
+    playPlaylist(token, playlist.uri);
     console.log(e);
   }
 
