@@ -21,7 +21,7 @@ export default function SpotifyPlaylistItem({ playlist, token }: Props) {
     <div className="px-4 py-3 rounded-xl transition-all duration-300 cursor-pointer border border-transparent hover:bg-gray-200/50">
       <div className="flex flex-col items-center justify-between">
         {/* Image */}
-        <div className="relative w-32 h-32">
+        <div className="relative w-28 h-28">
           {image && (
             <Image
               src={image}
