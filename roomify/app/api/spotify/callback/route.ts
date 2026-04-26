@@ -14,15 +14,9 @@ export async function GET(req: Request) {
   try {
     const tokenData = await exchangeSpotifyCode(code);
 
-    const res = NextResponse.redirect(redirect_uri ?? "");
+    const expiresAt = Date.now() + tokenData.expires_in * 1000;
 
-    // 🍪 STORE TOKEN HERE
-    res.cookies.set("spotify_token", tokenData.access_token, {
-      httpOnly: true,
-      path: "/",
-      sameSite: "lax",
-      secure: false, // add this
-    });
+    const res = NextResponse.redirect(redirect_uri ?? "");
 
     res.cookies.set("spotify_token", tokenData.access_token, {
       httpOnly: true,
@@ -30,7 +24,15 @@ export async function GET(req: Request) {
       sameSite: "lax",
       secure: false,
     });
+
     res.cookies.set("spotify_refresh_token", tokenData.refresh_token, {
+      httpOnly: true,
+      path: "/",
+      sameSite: "lax",
+      secure: false,
+    });
+
+    res.cookies.set("spotify_expires_at", expiresAt.toString(), {
       httpOnly: true,
       path: "/",
       sameSite: "lax",

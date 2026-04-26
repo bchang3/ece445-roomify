@@ -51,6 +51,10 @@ class TriggerRequest(BaseModel):
 class PlayPlaylistRequest(BaseModel):
     access_token: str
     playlist_uri: str
+class PlayPresetRequest(BaseModel):
+    preset_id: str
+    board_serial: str
+    access_token: str 
 
 @app.get('/')
 def index():
@@ -73,6 +77,56 @@ async def get_presets(board_serial: str = Path(..., description="Serial number o
         raise HTTPException(status_code=400, detail=response.error.message)
     
     return {"board_serial": board_serial, "presets": response.data}
+
+@app.post("/presets/play")
+async def play_preset(req: PlayPresetRequest):
+    preset_res = supabase.table("presets") \
+        .select("*") \
+        .eq("id", req.preset_id) \
+        .single() \
+        .execute()
+
+    preset = preset_res.data
+
+    if not preset:
+        raise HTTPException(status_code=404, detail="Preset not found")
+
+    button_ids = preset.get("button_ids", [])
+    playlist_uri = preset.get("playlist_uri")
+
+    buttons_res = supabase.table("buttons") \
+        .select("id, command, device_header") \
+        .in_("id", button_ids) \
+        .execute()
+
+    buttons = buttons_res.data or []
+
+    try: 
+      if playlist_uri:
+          sp = spotipy.Spotify(auth=req.access_token)
+          sp.start_playback(context_uri=playlist_uri)
+
+      queued = []
+
+      for btn in buttons:
+          res = supabase.table("commands").insert({
+              "board_serial": req.board_serial,
+              "device_header": btn["device_header"],
+              "command": btn["command"],
+              "status": "pending"
+          }).execute()
+          queued.append(res.data)
+
+    except spotipy.SpotifyException as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    return {
+        "message": "Preset executed",
+        "playlist_uri": playlist_uri,
+        "commands_queued": len(queued)
+    }
 
 
 @app.post("/remotes")

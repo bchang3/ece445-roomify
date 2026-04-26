@@ -1,9 +1,92 @@
-import { Remote, RemoteButton } from "./types";
+import { supabase } from "./supabase";
+import {
+  SpotifyPlaylist,
+  Remote,
+  RemoteButton,
+  TokenBundle,
+  Preset,
+} from "./types";
 
-export async function playPlaylist(
-  accessToken: string,
-  playlistUri: string,
-) {
+export async function getValidSpotifyToken(
+  tokens: TokenBundle,
+): Promise<TokenBundle> {
+  const buffer = 60 * 1000; // 1 minute buffer
+
+  const isExpired = Date.now() > tokens.expiresAt - buffer;
+
+  if (!isExpired) {
+    return tokens;
+  }
+  if (!tokens.refreshToken) {
+    throw new Error("No refresh token found!");
+  }
+
+  const refreshed = await refreshSpotifyToken(tokens.refreshToken);
+
+  const newAccessToken = refreshed.access_token;
+  const newRefreshToken = refreshed.refresh_token ?? tokens.refreshToken; // Spotify may not return a new one
+
+  const newExpiresAt = Date.now() + refreshed.expires_in * 1000;
+
+  return {
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
+    expiresAt: newExpiresAt,
+  };
+}
+
+export async function deletePreset(id: string) {
+  const { error } = await supabase.from("presets").delete().eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  return true;
+}
+
+export async function getAllButtons(): Promise<RemoteButton[]> {
+  const { data } = await supabase
+    .from("buttons")
+    .select("id, name, command, remote_id, remote:remotes(name)")
+    .order("name");
+  return (data ?? []) as unknown as RemoteButton[];
+}
+
+export async function getButtonsByIds(ids: string[]): Promise<RemoteButton[]> {
+  if (!ids.length) return [];
+
+  const { data, error } = await supabase
+    .from("buttons")
+    .select("id, remote_id, name, command")
+    .in("id", ids);
+
+  if (error) {
+    console.error("Failed to fetch buttons:", error);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getPresets(boardSerial: string): Promise<Preset[]> {
+  const { data: presets } = await supabase
+    .from("presets")
+    .select("*")
+    .eq("board_serial", boardSerial)
+    .order("created_at", { ascending: false });
+
+  if (!presets) return [];
+  return await Promise.all(
+    presets.map(async (preset) => {
+      const buttons = await getButtonsByIds(preset.button_ids);
+
+      return {
+        ...preset,
+        buttons,
+      };
+    }),
+  );
+}
+
+export async function playPlaylist(accessToken: string, playlistUri: string) {
   if (!accessToken || !playlistUri) return;
 
   try {
@@ -18,7 +101,7 @@ export async function playPlaylist(
           access_token: accessToken,
           playlist_uri: playlistUri,
         }),
-      }
+      },
     );
 
     if (!res.ok) {
@@ -30,6 +113,43 @@ export async function playPlaylist(
     return await res.json();
   } catch (err) {
     console.error("playPlaylist error:", err);
+  }
+}
+
+export async function playPreset(
+  presetId: string,
+  boardSerial: string,
+  accessToken: string,
+) {
+  console.log("PLAYING PRESET", presetId, boardSerial, accessToken);
+  if (!presetId || !boardSerial || !accessToken) return;
+
+  try {
+    console.log("making request");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL!}/presets/play`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          preset_id: presetId,
+          board_serial: boardSerial,
+          access_token: accessToken,
+        }),
+      },
+    );
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Error playing preset:", text);
+      throw new Error(`Failed to play preset: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("playPreset error:", err);
   }
 }
 
@@ -171,6 +291,8 @@ export async function getSpotifyUserId(accessToken: string): Promise<string> {
 
   if (!res.ok) {
     const error = await res.text();
+    if (res.status == 401) {
+    }
     throw new Error(`Failed to fetch Spotify user: ${res.status} ${error}`);
   }
 
@@ -179,7 +301,9 @@ export async function getSpotifyUserId(accessToken: string): Promise<string> {
   return data.id;
 }
 
-export async function getSpotifyPlaylists(token?: string) {
+export async function getSpotifyPlaylists(
+  token?: string,
+): Promise<SpotifyPlaylist[] | null> {
   if (!token) return [];
 
   const userId = await getSpotifyUserId(token);
@@ -195,7 +319,7 @@ export async function getSpotifyPlaylists(token?: string) {
   const data = await res.json();
 
   const publicPlaylists = data.items.filter(
-    (p: any) => p.public && p.owner.id === userId,
+    (p: SpotifyPlaylist) => p.public && p.owner.id === userId,
   );
   return publicPlaylists || [];
 }

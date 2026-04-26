@@ -4,10 +4,22 @@ import RemoteList from "@/components/RemoteList";
 import AddRemoteButton from "@/components/AddRemoteButton";
 import SpotifyPlaylistItem from "@/components/SpotifyPlaylistItem";
 import ConnectSpotify from "@/components/ConnectSpotify";
+import { SpotifyPlaylist } from "@/lib/types";
 
 export default async function Home() {
   const cookieStore = await cookies();
-  const token = cookieStore.get("spotify_token")?.value;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+  const res = await fetch(`${baseUrl}/api/spotify/token`, {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+    cache: "no-store",
+  });
+
+  const data = await res.json();
+
+  const token = data.access_token;
 
   const [playlistsResult, remotes] = await Promise.all([
     getSpotifyPlaylists(token),
@@ -57,32 +69,11 @@ export default async function Home() {
 
           {isLoggedIn && !isTokenExpired && (
             <div className="max-h-105 grid grid-cols-3 gap-2 overflow-y-auto space-y-3 pr-1">
-              {playlists.map((p: any) => (
+              {playlists.map((p: SpotifyPlaylist) => (
                 <SpotifyPlaylistItem key={p.id} playlist={p} token={token} />
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* FOOTER */}
-      <div className="mt-auto flex py-4 border-t border-gray-100 mx-auto gap-8">
-        <div className="flex flex-col items-center text-red-800">
-          <div className="bg-red-800 p-1 rounded-md text-white">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L4 5v11c0 5.25 3.42 10.16 8 11.5 4.58-1.34 8-6.25 8-11.5V5l-8-3z" />
-            </svg>
-          </div>
-          <span className="text-[10px] mt-1 font-bold">Remotes</span>
-        </div>
-
-        <div className="flex flex-col items-center text-red-800">
-          <div className="bg-red-800 p-1 rounded-md text-white">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L4 5v11c0 5.25 3.42 10.16 8 11.5 4.58-1.34 8-6.25 8-11.5V5l-8-3z" />
-            </svg>
-          </div>
-          <span className="text-[10px] mt-1 font-bold">Presets</span>
         </div>
       </div>
     </div>

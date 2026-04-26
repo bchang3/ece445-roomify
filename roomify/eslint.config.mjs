@@ -5,13 +5,6 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  //FIXME
-  {
-    rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-    },
-  },
-
   // Ignore build outputs
   globalIgnores([
     ".next/**",

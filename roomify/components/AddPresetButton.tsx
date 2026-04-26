@@ -4,37 +4,22 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { PlusIcon } from "@heroicons/react/24/outline";
-
-type Button = {
-  id: string;
-  name: string;
-  command: string;
-  remotes: { name: string } | null;
-};
-
-type Playlist = { id: string; name: string };
+import { RemoteButton, SpotifyPlaylist } from "@/lib/types";
 
 type Props = {
-  buttons: Button[];
-  playlists: Playlist[];
-  boardSerial: string;
+  buttons: RemoteButton[];
+  playlists: SpotifyPlaylist[];
   token: string | null;
 };
 
-export default function AddPresetButton({
-  buttons,
-  playlists,
-  boardSerial,
-  token,
-}: Props) {
+export default function AddPresetButton({ buttons, playlists, token }: Props) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(
-    null,
-  );
+  const [selectedPlaylist, setSelectedPlaylist] =
+    useState<SpotifyPlaylist | null>(null);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -43,10 +28,8 @@ export default function AddPresetButton({
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
-  const filteredButtons = buttons.filter(
-    (b) =>
-      b.name.toLowerCase().includes(search.toLowerCase()) ||
-      b.remotes?.name.toLowerCase().includes(search.toLowerCase()),
+  const filteredButtons = buttons.filter((b) =>
+    b.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   function toggleButton(id: string) {
@@ -61,24 +44,21 @@ export default function AddPresetButton({
     setSaving(true);
 
     try {
-      // 1. Insert into DB
       await supabase.from("presets").insert({
         name: name.trim(),
-        board_serial: boardSerial,
-        playlist_id: selectedPlaylist?.id ?? null,
+        board_serial: "917a595fba5dba86", //FIXME
+        playlist_uri: selectedPlaylist?.uri ?? null,
         playlist_name: selectedPlaylist?.name ?? null,
         button_ids: selectedButtons,
       });
 
-      // 2. Reset UI immediately
       setOpen(false);
       setName("");
       setSelectedButtons([]);
       setSelectedPlaylist(null);
       setSearch("");
 
-      // 3. Ensure server refresh triggers AFTER state updates
-      router.refresh();
+      window.location.reload();
     } catch (err) {
       console.error("Failed to save preset:", err);
     } finally {
@@ -86,9 +66,9 @@ export default function AddPresetButton({
     }
   }
 
-  const grouped = filteredButtons.reduce<Record<string, Button[]>>(
+  const grouped = filteredButtons.reduce<Record<string, RemoteButton[]>>(
     (acc, btn) => {
-      const group = btn.remotes?.name ?? "Unknown";
+      const group = btn.remote?.name ?? "Unknown";
       if (!acc[group]) acc[group] = [];
       acc[group].push(btn);
       return acc;
@@ -122,7 +102,7 @@ export default function AddPresetButton({
             </div>
 
             {/* NAME */}
-            <label className="block mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <label className="block mb-1 text-xs font-bold text-black uppercase tracking-wide">
               Preset Name
             </label>
             <input
@@ -133,7 +113,7 @@ export default function AddPresetButton({
             />
 
             {/* SEARCH */}
-            <label className="block mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <label className="block mb-1 text-xs font-bold text-black uppercase tracking-wide">
               Buttons
             </label>
             <input
@@ -147,7 +127,7 @@ export default function AddPresetButton({
             <div className="border border-gray-100 rounded-md overflow-hidden mb-4 max-h-52 overflow-y-auto bg-white">
               {Object.entries(grouped).map(([remote, btns]) => (
                 <div key={remote}>
-                  <div className="px-3 py-1 bg-[#F8F8F8] text-[11px] font-semibold text-gray-400 uppercase tracking-wide border-b border-gray-100">
+                  <div className="px-2 py-1 bg-[#F8F8F8] text-xs font-semibold uppercase text-gray-500 tracking-wide border-b border-gray-100">
                     {remote}
                   </div>
 
@@ -182,7 +162,7 @@ export default function AddPresetButton({
             </div>
 
             {/* PLAYLIST */}
-            <label className="block mb-1 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <label className="block mb-1 text-xs font-bold text-black uppercase tracking-wide">
               Spotify Playlist (optional)
             </label>
 
@@ -206,9 +186,7 @@ export default function AddPresetButton({
                 {playlists.map((pl) => (
                   <button
                     key={pl.id}
-                    onClick={() =>
-                      setSelectedPlaylist({ id: pl.id, name: pl.name })
-                    }
+                    onClick={() => setSelectedPlaylist(pl)}
                     className={`w-full text-left px-3 py-2 text-sm border-b border-gray-100 last:border-0 transition ${
                       selectedPlaylist?.id === pl.id
                         ? "bg-red-50 text-[#B22222] font-medium"

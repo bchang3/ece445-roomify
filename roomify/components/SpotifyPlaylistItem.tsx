@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { PlayIcon } from "@heroicons/react/16/solid";
 import { playPlaylist } from "@/lib/server";
+import { SpotifyPlaylist } from "@/lib/types";
 
 type Props = {
-  playlist: any;
+  playlist: SpotifyPlaylist;
   token: string;
 };
 
