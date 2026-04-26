@@ -32,24 +32,26 @@ export default function AddPresetButton({
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(
+    null,
+  );
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const filteredButtons = buttons.filter(
     (b) =>
       b.name.toLowerCase().includes(search.toLowerCase()) ||
-      b.remotes?.name.toLowerCase().includes(search.toLowerCase())
+      b.remotes?.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   function toggleButton(id: string) {
     setSelectedButtons((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   }
 
@@ -91,7 +93,7 @@ export default function AddPresetButton({
       acc[group].push(btn);
       return acc;
     },
-    {}
+    {},
   );
 
   return (
@@ -108,7 +110,6 @@ export default function AddPresetButton({
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
           <div className="bg-[#F8F8F8] border border-gray-100 w-full max-w-lg rounded-2xl p-5 max-h-[90vh] overflow-y-auto shadow-sm">
-
             {/* HEADER */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-semibold text-gray-900">New Preset</h2>

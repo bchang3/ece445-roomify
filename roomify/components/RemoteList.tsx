@@ -46,7 +46,9 @@ export default function RemoteList({ remotes }: { remotes: Remote[] }) {
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 text-left">{remote.name}</h3>
+              <h3 className="font-semibold text-gray-900 text-left">
+                {remote.name}
+              </h3>
               <p className="text-xs text-gray-400 uppercase tracking-wider">
                 {remote.device_type} • {remote.board_serial}
               </p>

@@ -1,6 +1,10 @@
 import { Remote, RemoteButton } from "./types";
 
-export async function pressButton(boardSerial: string, device_header: string, command: string) {
+export async function pressButton(
+  boardSerial: string,
+  device_header: string,
+  command: string,
+) {
   if (!boardSerial || !command) return;
 
   try {
@@ -84,7 +88,7 @@ export async function exchangeSpotifyCode(code: string) {
         Buffer.from(
           process.env.SPOTIFY_CLIENT_ID +
             ":" +
-            process.env.SPOTIFY_CLIENT_SECRET
+            process.env.SPOTIFY_CLIENT_SECRET,
         ).toString("base64"),
     },
     body: new URLSearchParams({
@@ -110,7 +114,9 @@ export async function refreshSpotifyToken(refreshToken: string) {
       Authorization:
         "Basic " +
         Buffer.from(
-          process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET
+          process.env.SPOTIFY_CLIENT_ID +
+            ":" +
+            process.env.SPOTIFY_CLIENT_SECRET,
         ).toString("base64"),
     },
     body: new URLSearchParams({
@@ -123,8 +129,27 @@ export async function refreshSpotifyToken(refreshToken: string) {
   return res.json();
 }
 
+export async function getSpotifyUserId(accessToken: string): Promise<string> {
+  const res = await fetch("https://api.spotify.com/v1/me", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(`Failed to fetch Spotify user: ${res.status} ${error}`);
+  }
+
+  const data = await res.json();
+
+  return data.id;
+}
+
 export async function getSpotifyPlaylists(token?: string) {
   if (!token) return [];
+
+  const userId = await getSpotifyUserId(token);
 
   const res = await fetch("https://api.spotify.com/v1/me/playlists", {
     headers: { Authorization: `Bearer ${token}` },
@@ -135,5 +160,9 @@ export async function getSpotifyPlaylists(token?: string) {
   if (!res.ok) return [];
 
   const data = await res.json();
-  return data.items || [];
+
+  const publicPlaylists = data.items.filter(
+    (p: any) => p.public && p.owner.id === userId,
+  );
+  return publicPlaylists || [];
 }

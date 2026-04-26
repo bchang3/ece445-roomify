@@ -3,7 +3,13 @@ import { pressButton } from "@/lib/server";
 import { RemoteButton } from "@/lib/types";
 import { useState } from "react";
 
-export default function ButtonGrid({ buttons, device_header }: { buttons: RemoteButton[], device_header: string }) {
+export default function ButtonGrid({
+  buttons,
+  device_header,
+}: {
+  buttons: RemoteButton[];
+  device_header: string;
+}) {
   const [loading, setLoading] = useState<string | null>(null);
 
   async function handlePress(btn: RemoteButton) {

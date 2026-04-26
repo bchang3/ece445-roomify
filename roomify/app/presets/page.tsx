@@ -9,7 +9,6 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 const BOARD_SERIAL = "917a595fba5dba86";
 
 async function getButtons() {
-
   const { data } = await supabase
     .from("buttons")
     .select("id, name, command, remote_id, remotes(name)")
@@ -18,7 +17,6 @@ async function getButtons() {
 }
 
 async function getPresets() {
-
   const { data } = await supabase
     .from("presets")
     .select("*")
@@ -39,7 +37,6 @@ export default async function PresetsPage() {
 
   return (
     <div className="min-h-screen mx-auto max-w-lg w-full p-4 bg-[#F8F8F8] flex flex-col gap-4">
-      
       {/* HEADER */}
       <div className="flex items-center justify-between py-2 px-2 border-b border-gray-100 relative">
         <Link href="/" className="text-gray-400 hover:text-gray-600 text-sm">
@@ -66,9 +63,7 @@ export default async function PresetsPage() {
       {/* CONTENT */}
       <div className="flex flex-col gap-6 flex-1">
         <div className="p-2">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">
-            Presets
-          </h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3">Presets</h2>
           {/* //FIXME */}
           <PresetsList presets={presets} buttons={[]} />
         </div>

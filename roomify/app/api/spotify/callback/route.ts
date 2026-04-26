@@ -25,10 +25,16 @@ export async function GET(req: Request) {
     });
 
     res.cookies.set("spotify_token", tokenData.access_token, {
-      httpOnly: true, path: "/", sameSite: "lax", secure: false,
+      httpOnly: true,
+      path: "/",
+      sameSite: "lax",
+      secure: false,
     });
     res.cookies.set("spotify_refresh_token", tokenData.refresh_token, {
-      httpOnly: true, path: "/", sameSite: "lax", secure: false,
+      httpOnly: true,
+      path: "/",
+      sameSite: "lax",
+      secure: false,
     });
 
     console.log("Spotify token stored successfully");
@@ -39,7 +45,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(
       { error: "Token exchange failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

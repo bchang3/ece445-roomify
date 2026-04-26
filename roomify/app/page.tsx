@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 import { getRemotes, getSpotifyPlaylists } from "@/lib/server";
 import RemoteList from "@/components/RemoteList";
 import AddRemoteButton from "@/components/AddRemoteButton";
-import AddSpotifyButton from "@/components/AddSpotifyButton";
 import SpotifyPlaylistItem from "@/components/SpotifyPlaylistItem";
+import ConnectSpotify from "@/components/ConnectSpotify";
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -20,7 +20,6 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen mx-auto max-w-lg w-full p-4 bg-[#F8F8F8] flex flex-col gap-4">
-      
       {/* HEADER */}
       <div className="flex items-center justify-between py-2 px-2 border-b border-gray-100 relative">
         <div className="w-6" />
@@ -30,14 +29,12 @@ export default async function Home() {
         </h1>
 
         <div className="flex gap-2">
-          <AddSpotifyButton />
           <AddRemoteButton />
         </div>
       </div>
 
       {/* CONTENT */}
       <div className="flex flex-col gap-6 flex-1">
-        
         {/* REMOTES */}
         <div className="p-2">
           <h2 className="text-lg font-bold text-gray-900 mb-3">Your Devices</h2>
@@ -50,11 +47,7 @@ export default async function Home() {
             Your Spotify Playlists
           </h2>
 
-          {!isLoggedIn && (
-            <div className="mt-2 p-3 bg-white border rounded-md text-sm text-gray-500">
-              Connect Spotify to view playlists.
-            </div>
-          )}
+          {!isLoggedIn && <ConnectSpotify />}
 
           {isLoggedIn && isTokenExpired && (
             <div className="mt-2 p-3 bg-white border border-red-200 rounded-md text-sm text-red-500">
@@ -63,9 +56,9 @@ export default async function Home() {
           )}
 
           {isLoggedIn && !isTokenExpired && (
-            <div className="max-h-[420px] overflow-y-auto space-y-3 pr-1">
+            <div className="max-h-105 grid grid-cols-3 gap-2 overflow-y-auto space-y-3 pr-1">
               {playlists.map((p: any) => (
-                <SpotifyPlaylistItem key={p.id} playlist={p} token={token!} />
+                <SpotifyPlaylistItem key={p.id} playlist={p} />
               ))}
             </div>
           )}

@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException, Path
 from pydantic import BaseModel
 from supabase import create_client, Client
 import os
+import spotipy
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -47,7 +48,9 @@ class TriggerRequest(BaseModel):
     board_serial: str
     device_header: str
     command: str
-
+class PlayPlaylistRequest(BaseModel):
+    access_token: str
+    playlist_uri: str
 
 @app.get('/')
 def index():
@@ -143,3 +146,21 @@ async def complete_command(id: str):
         .update({"status": "done"}) \
         .eq("id", id) \
         .execute()
+    
+@app.post("/playlists/play")
+async def play_playlist(payload: PlayPlaylistRequest):
+    try:
+        sp = spotipy.Spotify(auth=payload.access_token)
+        sp.start_playback(context_uri=payload.playlist_uri)
+
+        return {
+            "success": True,
+            "message": "Playback started",
+            "playlist": payload.playlist_id,
+        }
+
+    except spotipy.SpotifyException as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
