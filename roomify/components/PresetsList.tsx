@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Preset } from "@/lib/types";
-import { deletePreset, playPreset } from "@/lib/server";
+import { deletePreset, playPreset, getPlaylistCover } from "@/lib/server";
 import Image from "next/image";
 
 type Props = { presets: Preset[]; accessToken: string };
 
+type CoverMap = Record<string, string | null>;
+
 export default function PresetsList({ presets: initial, accessToken }: Props) {
   const [presets, setPresets] = useState(initial);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [covers, setCovers] = useState<CoverMap>({});
 
   async function handleDeletePreset(id: string) {
     setDeleting(id);
@@ -17,6 +20,33 @@ export default function PresetsList({ presets: initial, accessToken }: Props) {
     setPresets((p) => p.filter((x) => x.id !== id));
     setDeleting(null);
   }
+
+  // Fetch playlist covers
+  useEffect(() => {
+    async function loadCovers() {
+      const newCovers: CoverMap = {};
+
+      await Promise.all(
+        presets.map(async (preset) => {
+          if (!preset.playlist_uri) return;
+
+          try {
+            const res = await getPlaylistCover(
+              accessToken,
+              preset.playlist_uri
+            );
+            newCovers[preset.id] = res.image;
+          } catch {
+            newCovers[preset.id] = null;
+          }
+        })
+      );
+
+      setCovers(newCovers);
+    }
+
+    loadCovers();
+  }, [presets, accessToken]);
 
   if (presets.length === 0) {
     return (
@@ -31,46 +61,54 @@ export default function PresetsList({ presets: initial, accessToken }: Props) {
       {presets.map((preset) => (
         <div
           key={preset.id}
-          onClick={() => playPreset(preset.id, "917a595fba5dba86", accessToken)}
-          className="group relative bg-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-transparent hover:border-red-100"
+          onClick={() =>
+            playPreset(preset.id, "917a595fba5dba86", accessToken)
+          }
+          className="group flex bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-transparent hover:border-red-100 overflow-hidden"
         >
-          {/* HEADER */}
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-semibold text-gray-900 text-left">
-                {preset.name}
-              </h3>
-            </div>
-
-            {/* DELETE */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeletePreset(preset.id);
-              }}
-              disabled={deleting === preset.id}
-              className="text-gray-300 hover:text-red-400 transition text-xl leading-none"
-            >
-              ×
-            </button>
+          {/* LEFT: COVER IMAGE */}
+          <div className="w-20 h-full bg-gray-100 flex-shrink-0">
+            {covers[preset.id] ? (
+              <Image
+                src={covers[preset.id]!}
+                alt="playlist cover"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200" />
+            )}
           </div>
-          <div className="mt-3 flex flex-wrap gap-2 font-semibold">
+
+          {/* MIDDLE: CONTENT */}
+          <div className="flex-1 px-4 py-3">
+            {/* HEADER */}
+            <h3 className="font-semibold text-gray-900">
+              {preset.name}
+            </h3>
+
+            {/* BUTTON TAGS */}
             {preset.buttons?.length ? (
-              <div className="flex gap-2">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {preset.buttons.map((btn) => (
                   <span
                     key={btn.id}
                     className="text-[11px] bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
                   >
                     {btn.name}
-                    <span className="text-gray-400 ml-1">({btn.command})</span>
+                    <span className="text-gray-400 ml-1">
+                      ({btn.command})
+                    </span>
                   </span>
                 ))}
               </div>
             ) : null}
+
+            {/* PLAYLIST LABEL */}
             {preset.playlist_name && (
-              <div>
-                <span className="flex flex-row gap-1 text-[11px] bg-green-500 text-white px-2 py-1 rounded-full">
+              <div className="mt-2">
+                <span className="inline-flex items-center gap-1 text-[11px] bg-green-500 text-white px-2 py-1 rounded-full">
                   <Image
                     src="/spotify.svg"
                     alt="Spotify"
@@ -82,6 +120,18 @@ export default function PresetsList({ presets: initial, accessToken }: Props) {
               </div>
             )}
           </div>
+
+          {/* RIGHT: DELETE */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeletePreset(preset.id);
+            }}
+            disabled={deleting === preset.id}
+            className="px-3 text-gray-300 hover:text-red-400 transition text-xl"
+          >
+            ×
+          </button>
         </div>
       ))}
     </div>

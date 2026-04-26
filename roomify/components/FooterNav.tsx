@@ -11,8 +11,8 @@ export default function BottomNav() {
   const isPresets = pathname.startsWith("/presets");
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100">
-      <div className="flex items-center justify-around py-2">
+    <div className="fixed bottom-0 left-0 right-0 z-50 ">
+      <div className="flex max-w-lg mx-auto items-center justify-around py-2 bg-white border-t border-gray-100">
         {/* HOME */}
         <Link
           href="/"

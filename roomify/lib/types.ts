@@ -3,7 +3,7 @@ export type DeviceType = "TV" | "AC" | "PROJECTOR" | "LIGHT";
 export type Preset = {
   id: string;
   name: string;
-  playlist_id: string | null;
+  playlist_uri: string | null;
   playlist_name: string | null;
   button_ids: string[];
   buttons: RemoteButton[];

@@ -323,3 +323,29 @@ export async function getSpotifyPlaylists(
   );
   return publicPlaylists || [];
 }
+
+export async function getPlaylistCover(
+  accessToken: string,
+  playlistUri: string
+) {
+  const playlistId = playlistUri.split(":").pop();
+  const res = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlistId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch playlist");
+  }
+
+  const data = await res.json();
+
+  return {
+    name: data.name,
+    image: data.images?.[0]?.url ?? null,
+  };
+}
