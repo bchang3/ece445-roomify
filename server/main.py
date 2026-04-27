@@ -93,26 +93,22 @@ def get_valid_spotify_token(supabase, board_serial: str):
 
     tokens = token_res.data
 
-    # If still valid (> 1 min buffer)
     if tokens["expires_at"] > int(time.time() * 1000) + 60000:
         return tokens
 
-    # Otherwise refresh
     updated = refresh_spotify_token(tokens["refresh_token"])
-
-    # persist update
     supabase.table("spotify_connections") \
-        .update({
-            "access_token": updated["access_token"],
-            "refresh_token": updated.get("refresh_token", tokens["refresh_token"]),
-            "expires_at": updated["expires_at"],
-        }) \
-        .eq("board_serial", board_serial) \
-        .execute()
+    .update({
+        "access_token": updated["access_token"],
+        "refresh_token": updated.get("refresh_token") or tokens["refresh_token"],
+        "expires_at": updated["expires_at"],
+    }) \
+    .eq("board_serial", board_serial) \
+    .execute()
 
     return {
         "access_token": updated["access_token"],
-        "refresh_token": updated.get("refresh_token", tokens["refresh_token"]),
+        "refresh_token": updated.get("refresh_token") or tokens["refresh_token"],
         "expires_at": updated["expires_at"],
     }
 
@@ -191,6 +187,7 @@ async def play_preset(req: PlayPresetRequest):
         "playlist_uri": playlist_uri,
         "commands_queued": len(queued)
     }
+
 @app.post("/remotes")
 async def add_remote(remote: RemoteCreate):
     board_resp = supabase.table("boards").select("*").eq("serial_number", remote.board_serial).execute()
