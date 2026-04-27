@@ -101,13 +101,17 @@ export default function AddButtonModal({
     setSaving(true);
 
     try {
-      await supabase.from("buttons").insert({
+      const { data, error } = await supabase.from("buttons").insert({
         name,
         command: captured.command,
         remote_id: remote_id,
         device_header: captured.device_header,
-        board_serial: boardSerial,
       });
+
+      if (error) {
+        console.error("Insert failed:", error.message);
+        throw error; // or handle UI state here
+      }
 
       await setPollingState(false);
 
