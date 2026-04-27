@@ -44,7 +44,12 @@ export default async function PresetsPage() {
       <div className="flex flex-col gap-6 flex-1">
         <div className="p-2">
           <h2 className="text-lg font-bold text-gray-900 mb-3">Presets</h2>
-          <PresetsList presets={presets} playlists={playlists} buttons={buttons} accessToken={token} />
+          <PresetsList
+            presets={presets}
+            playlists={playlists}
+            buttons={buttons}
+            accessToken={token}
+          />
         </div>
       </div>
     </div>

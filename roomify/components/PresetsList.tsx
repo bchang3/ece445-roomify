@@ -2,20 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { Preset, RemoteButton, SpotifyPlaylist } from "@/lib/types";
-import {
-  deletePreset,
-  playPreset,
-  getPlaylistCover,
-} from "@/lib/server";
+import { deletePreset, playPreset, getPlaylistCover } from "@/lib/server";
 import Image from "next/image";
 import { Pencil } from "lucide-react";
 import AddPresetModal from "./AddPresetModal";
 
-type Props = { presets: Preset[]; playlists: SpotifyPlaylist[]; buttons: RemoteButton[]; accessToken: string };
+type Props = {
+  presets: Preset[];
+  playlists: SpotifyPlaylist[];
+  buttons: RemoteButton[];
+  accessToken: string;
+};
 
 type CoverMap = Record<string, string | null>;
 
-export default function PresetsList({ presets: initial, accessToken, buttons, playlists }: Props) {
+export default function PresetsList({
+  presets: initial,
+  accessToken,
+  buttons,
+  playlists,
+}: Props) {
   const [presets, setPresets] = useState(initial);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [covers, setCovers] = useState<CoverMap>({});
@@ -72,8 +78,8 @@ export default function PresetsList({ presets: initial, accessToken, buttons, pl
   return (
     <>
       <AddPresetModal
-        buttons={buttons} 
-        playlists={playlists} 
+        buttons={buttons}
+        playlists={playlists}
         token={accessToken}
         currentPreset={editingPreset}
         open={openModal}
@@ -104,9 +110,7 @@ export default function PresetsList({ presets: initial, accessToken, buttons, pl
 
             {/* MIDDLE: CONTENT */}
             <div className="flex-1 px-4 py-3">
-              <h3 className="font-semibold text-gray-900">
-                {preset.name}
-              </h3>
+              <h3 className="font-semibold text-gray-900">{preset.name}</h3>
 
               {preset.buttons?.length ? (
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -140,7 +144,7 @@ export default function PresetsList({ presets: initial, accessToken, buttons, pl
             </div>
 
             <div className="flex flex-col items-center justify-start pr-2 pt-2 gap-1">
-               <button
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDeletePreset(preset.id);
@@ -160,7 +164,6 @@ export default function PresetsList({ presets: initial, accessToken, buttons, pl
               >
                 <Pencil className="w-4 h-4" />
               </button>
-             
             </div>
           </div>
         ))}

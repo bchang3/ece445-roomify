@@ -66,9 +66,7 @@ export default function AddRemoteButton() {
           >
             {/* HEADER */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-gray-900">
-                Add Remote Button
-              </h2>
+              <h2 className="font-semibold text-gray-900">Add Remote Button</h2>
               <button
                 onClick={() => setOpen(false)}
                 className="text-gray-400 hover:text-gray-600 text-lg"
@@ -88,7 +86,6 @@ export default function AddRemoteButton() {
               className="w-full bg-white border border-gray-100 rounded-md px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-red-100"
             />
 
-
             {/* DEVICE TYPE */}
             <label className="block mb-1 text-xs font-bold text-black uppercase tracking-wide">
               Device Type
@@ -106,11 +103,7 @@ export default function AddRemoteButton() {
             {/* SAVE */}
             <button
               onClick={save}
-              disabled={
-                saving ||
-                !name.trim() ||
-                !boardSerial
-              }
+              disabled={saving || !name.trim() || !boardSerial}
               className="w-full bg-[#B22222] text-white rounded-md py-2.5 text-sm font-semibold hover:bg-red-700 disabled:opacity-40 transition"
             >
               {saving ? "Saving..." : "Create Button"}

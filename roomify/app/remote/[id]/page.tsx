@@ -1,6 +1,8 @@
 import { getButtons, getRemotes } from "@/lib/server";
 import ButtonGrid from "@/components/ButtonGrid";
 import Link from "next/link";
+import AddButtonModal from "@/components/AddButtonModal";
+import AddButton from "@/components/AddButton";
 
 export default async function RemotePage({
   params,
@@ -83,9 +85,10 @@ export default async function RemotePage({
               <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                 Buttons
               </h3>
-              <p className="text-[10px] font-mono text-gray-300 italic">
-                tap to send IR signal
-              </p>
+              <AddButton
+                board_serial={remote.board_serial}
+                remote_id={remote.id}
+              />
             </div>
 
             <ButtonGrid

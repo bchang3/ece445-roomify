@@ -43,9 +43,7 @@ export default function AddPresetModal({
       setSelectedButtons(currentPreset.button_ids ?? []);
 
       // match playlist from uri
-      const found = playlists.find(
-        (p) => p.uri === currentPreset.playlist_uri,
-      );
+      const found = playlists.find((p) => p.uri === currentPreset.playlist_uri);
       setSelectedPlaylist(found ?? null);
     } else {
       // reset for new preset
@@ -119,7 +117,7 @@ export default function AddPresetModal({
   );
 
   if (!open) return null;
-  
+
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/20">
       <div className="bg-[#F8F8F8] border border-gray-100 w-full max-w-lg rounded-2xl p-5 max-h-[90vh] overflow-y-auto shadow-sm">
@@ -174,15 +172,11 @@ export default function AddPresetModal({
                     key={btn.id}
                     onClick={() => toggleButton(btn.id)}
                     className={`w-full flex items-center justify-between px-3 py-2 text-sm border-b border-gray-100 last:border-0 transition ${
-                      selected
-                        ? "bg-red-50 text-[#B22222]"
-                        : "hover:bg-gray-50"
+                      selected ? "bg-red-50 text-[#B22222]" : "hover:bg-gray-50"
                     }`}
                   >
                     <span>{btn.name}</span>
-                    <span className="text-gray-400 text-xs">
-                      {btn.command}
-                    </span>
+                    <span className="text-gray-400 text-xs">{btn.command}</span>
                   </button>
                 );
               })}
@@ -256,8 +250,8 @@ export default function AddPresetModal({
               ? "Saving..."
               : "Creating..."
             : isEditing
-            ? "Save Changes"
-            : "Create Preset"}
+              ? "Save Changes"
+              : "Create Preset"}
         </button>
       </div>
     </div>

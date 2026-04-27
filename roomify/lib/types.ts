@@ -9,6 +9,11 @@ export type Preset = {
   buttons: RemoteButton[];
 };
 
+export type RemoteCapture = {
+  board_serial: string;
+  command: string;
+  device_header: string;
+};
 export type PresetButton = {
   id: string;
   name: string;
