@@ -125,6 +125,16 @@ async def get_remotes(board_serial: str = Path(..., description="Serial number o
     
     return {"board_serial": board_serial, "remotes": response.data}
 
+@app.get("/board/{board_serial}")
+async def get_remotes(board_serial: str = Path(..., description="Serial number of the board")):
+    response = supabase.table("boards").select("*").eq("serial_number", board_serial).execute()
+    
+    if hasattr(response, "error") and response.error:
+        raise HTTPException(status_code=400, detail=response.error.message)
+    
+    return {"polling": response.polling}
+
+
 @app.get("/presets/{board_serial}")
 async def get_presets(board_serial: str = Path(..., description="Serial number of the board")):
     response = supabase.table("presets").select("*").eq("board_serial", board_serial).execute()

@@ -3,15 +3,14 @@ import PresetsList from "@/components/PresetsList";
 import AddPresetButton from "@/components/AddPresetButton";
 
 export default async function PresetsPage() {
-  const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-const res = await fetch(
-  `${baseUrl}/api/spotify/token?board_serial=917a595fba5dba86`,
-  {
-    cache: "no-store",
-  }
-);
+  const res = await fetch(
+    `${baseUrl}/api/spotify/token?board_serial=917a595fba5dba86`,
+    {
+      cache: "no-store",
+    },
+  );
 
   const data = await res.json();
 
@@ -22,6 +21,7 @@ const res = await fetch(
     getAllButtons(),
     getPresets("917a595fba5dba86"),
   ]);
+  console.log(playlists);
 
   return (
     <div className="min-h-screen mx-auto max-w-lg w-full p-4 bg-[#F8F8F8] flex flex-col gap-4">
@@ -44,7 +44,7 @@ const res = await fetch(
       <div className="flex flex-col gap-6 flex-1">
         <div className="p-2">
           <h2 className="text-lg font-bold text-gray-900 mb-3">Presets</h2>
-          <PresetsList presets={presets} accessToken={token} />
+          <PresetsList presets={presets} playlists={playlists} buttons={buttons} accessToken={token} />
         </div>
       </div>
     </div>

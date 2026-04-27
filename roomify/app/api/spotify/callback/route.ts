@@ -12,7 +12,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing code" }, { status: 400 });
   }
 
-
   try {
     //FIXME
     const board_serial = "917a595fba5dba86";
@@ -21,20 +20,18 @@ export async function GET(req: Request) {
 
     const expiresAt = Date.now() + tokenData.expires_in * 1000;
 
-    const { error } = await supabase
-      .from("spotify_connections")
-      .upsert({
-        board_serial,
-        access_token: tokenData.access_token,
-        refresh_token: tokenData.refresh_token,
-        expires_at: expiresAt,
-      });
+    const { error } = await supabase.from("spotify_connections").upsert({
+      board_serial,
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_at: expiresAt,
+    });
 
     if (error) {
       console.error("Supabase upsert error:", error);
       return NextResponse.json(
         { error: "Failed to store tokens" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -46,7 +43,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(
       { error: "Token exchange failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

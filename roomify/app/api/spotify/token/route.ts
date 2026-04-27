@@ -9,7 +9,7 @@ export async function GET(req: Request) {
   if (!board_serial) {
     return NextResponse.json(
       { error: "Missing board_serial" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -22,7 +22,7 @@ export async function GET(req: Request) {
   if (error || !data) {
     return NextResponse.json(
       { error: "Missing Spotify tokens" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -33,12 +33,9 @@ export async function GET(req: Request) {
       expiresAt: data.expires_at,
     });
 
-    const accessTokenChanged =
-      updated.accessToken !== data.access_token;
-    const refreshTokenChanged =
-      updated.refreshToken !== data.refresh_token;
-    const expiresChanged =
-      updated.expiresAt !== data.expires_at;
+    const accessTokenChanged = updated.accessToken !== data.access_token;
+    const refreshTokenChanged = updated.refreshToken !== data.refresh_token;
+    const expiresChanged = updated.expiresAt !== data.expires_at;
 
     // persist updates if needed
     if (accessTokenChanged || refreshTokenChanged || expiresChanged) {
@@ -64,7 +61,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(
       { error: "Failed to refresh token" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

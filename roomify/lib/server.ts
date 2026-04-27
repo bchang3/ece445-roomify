@@ -116,10 +116,7 @@ export async function playPlaylist(accessToken: string, playlistUri: string) {
   }
 }
 
-export async function playPreset(
-  presetId: string,
-  boardSerial: string,
-) {
+export async function playPreset(presetId: string, boardSerial: string) {
   if (!presetId || !boardSerial) return;
 
   try {
@@ -322,7 +319,7 @@ export async function getSpotifyPlaylists(
 
 export async function getPlaylistCover(
   accessToken: string,
-  playlistUri: string
+  playlistUri: string,
 ) {
   const playlistId = playlistUri.split(":").pop();
   const res = await fetch(
@@ -331,7 +328,7 @@ export async function getPlaylistCover(
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-    }
+    },
   );
 
   if (!res.ok) {

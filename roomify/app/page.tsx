@@ -6,15 +6,14 @@ import ConnectSpotify from "@/components/ConnectSpotify";
 import { SpotifyPlaylist } from "@/lib/types";
 
 export default async function Home() {
-  const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-const res = await fetch(
-  `${baseUrl}/api/spotify/token?board_serial=917a595fba5dba86`,
-  {
-    cache: "no-store",
-  }
-);
+  const res = await fetch(
+    `${baseUrl}/api/spotify/token?board_serial=917a595fba5dba86`,
+    {
+      cache: "no-store",
+    },
+  );
 
   const data = await res.json();
 
