@@ -56,6 +56,11 @@ class PlayPresetRequest(BaseModel):
     preset_id: str
     board_serial: str
 
+class CaptureRequest(BaseModel):
+    board_serial: str
+    device_header: str
+    command: str
+
 def refresh_spotify_token(refresh_token: str):
     res = requests.post(
         "https://accounts.spotify.com/api/token",
@@ -262,6 +267,19 @@ async def trigger(req: TriggerRequest):
     }).execute()
 
     return {"message": "Command queued", "data": response.data}
+
+@app.post("/captures")
+async def create_capture(req: CaptureRequest):
+    response = supabase.table("ir_captures").insert({
+        "board_serial": req.board_serial,
+        "device_header": req.device_header,
+        "command": req.command,
+    }).execute()
+
+    return {
+        "message": "Capture stored",
+        "data": response.data
+    }
 
 @app.post("/commands/{id}/complete")
 async def complete_command(id: str):
