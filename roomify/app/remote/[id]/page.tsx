@@ -92,7 +92,6 @@ export default async function RemotePage({
             </div>
 
             <ButtonGrid
-              device_header={remote.device_header}
               buttons={buttons}
             />
           </section>

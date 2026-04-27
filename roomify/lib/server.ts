@@ -56,7 +56,7 @@ export async function getButtonsByIds(ids: string[]): Promise<RemoteButton[]> {
 
   const { data, error } = await supabase
     .from("buttons")
-    .select("id, remote_id, name, command")
+    .select("id, remote_id, name, device_header, command")
     .in("id", ids);
 
   if (error) {

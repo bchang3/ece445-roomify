@@ -56,5 +56,6 @@ export interface RemoteButton {
   name: string;
   command: string;
   remote_id: string;
+  device_header: string;
   remote?: { name: string };
 }

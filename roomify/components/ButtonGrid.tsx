@@ -5,10 +5,8 @@ import { useState } from "react";
 
 export default function ButtonGrid({
   buttons,
-  device_header,
 }: {
   buttons: RemoteButton[];
-  device_header: string;
 }) {
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -16,7 +14,7 @@ export default function ButtonGrid({
     setLoading(btn.id);
     try {
       //FIXME
-      pressButton("917a595fba5dba86", device_header, btn.command);
+      pressButton("917a595fba5dba86", btn.device_header, btn.command);
     } catch (err) {
       console.error(err);
     } finally {
