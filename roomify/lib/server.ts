@@ -43,6 +43,17 @@ export async function deletePreset(id: string) {
   return true;
 }
 
+export async function deleteButton(id: string) {
+  const { error } = await supabase
+    .from("buttons")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  return true;
+}
+
 export async function getAllButtons(): Promise<RemoteButton[]> {
   const { data } = await supabase
     .from("buttons")
