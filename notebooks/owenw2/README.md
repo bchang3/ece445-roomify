@@ -2,7 +2,7 @@
 
 ---
 
-## January 19, 2026
+## January 22, 2026
 **Objective:**  
 Understand project scope and begin initial design brainstorming.
 
@@ -19,8 +19,6 @@ Understand project scope and begin initial design brainstorming.
 - Emphasis on IR communication reliability and modular design.  
 - Decided repeaters would act as signal “mirrors” for non-line-of-sight coverage.
 
----
-
 ## January 24, 2026
 **Objective:**  
 Initial box and enclosure calculations.
@@ -30,11 +28,21 @@ Initial box and enclosure calculations.
 - Selected polycarbonate material (density = 1.20 g/cm³).  
 - Calculated approximate mass (~310 g).
 
+**Equations:**
+F = mg = 0.31 × 9.81 = **3.0411 N**  
+
+τ = rF = (0.1778 / 2) × 3.0411 = **0.2704 Nm**
+
+Motor output (with gearing):  
+0.000785 × 50 × 2 = **0.0785 Nm**
+
+F = τ / r = 0.0785 / 0.01 = **7.85 N**
+
+τ (linkage) = 7.85 × 0.0508 = **0.398 Nm**
+
 **Observations:**  
 - Lightweight design is important for motor feasibility.  
 - Enclosure must balance durability and weight.
-
----
 
 ## February 2, 2026
 **Objective:**  
@@ -54,14 +62,12 @@ E = 130 / 100 = **1.3 mW/m²**
 **Link Margin:**  
 10 log10(E / Emin) = **9.37 dB**
 
-**Conclusion:**  
-- Strong signal margin ensures reliable communication.
 
----
+Concluded that strong signal margin ensures reliable communication.
 
 ## February 10, 2026
 **Objective:**  
-Design repeater system.
+Design no-MCU repeater system.
 
 **Work Done:**  
 - Defined repeater workflow:
@@ -75,15 +81,16 @@ Design repeater system.
 
 **Requirements:**  
 - Receive 38kHz NEC signals (>0.15 mW/m²)  
-- >95% noise rejection  
 - Transmit >130 mW/sr  
 
-**Decision:**  
-- Use MCU-based repeater for reliability.
+## February 22, 2026
+**Objective:**  
+Design no-MCU repeater system.
 
----
+![alt text](image-1.png)
+![alt text](image.png)
 
-## February 18, 2026
+## March 5, 2026
 **Objective:**  
 Evaluate non-MCU repeater.
 
@@ -97,9 +104,11 @@ Evaluate non-MCU repeater.
 **Conclusion:**  
 - Rejected in favor of MCU-based design.
 
----
+![alt text](image-3.png)
+![alt text](image-2.png)
+![alt text](image-4.png)
 
-## March 1, 2026
+## March 27, 2026
 **Objective:**  
 Hardware prototyping and soldering.
 
@@ -111,44 +120,16 @@ Hardware prototyping and soldering.
 - Clean connections are critical for signal integrity.  
 - Hardware debugging requires detailed notes.
 
----
+![alt text](image-5.png)
 
-## March 10, 2026
+## April 10, 2026
 **Objective:**  
-Motor system feasibility.
+Hardware prototyping and soldering.
 
-**Work Done:**  
-- Modeled crank-slider mechanism.  
+![alt text](image-6.png)
+![alt text](image-7.png)
 
-**Equations:**  
-F = mg = 0.31 × 9.81 = **3.0411 N**  
-
-τ = rF = (0.1778 / 2) × 3.0411 = **0.2704 Nm**
-
-Motor output (with gearing):  
-0.000785 × 50 × 2 = **0.0785 Nm**
-
-F = τ / r = 0.0785 / 0.01 = **7.85 N**
-
-τ (linkage) = 7.85 × 0.0508 = **0.398 Nm**
-
-**Conclusion:**  
-- System exceeds required torque → viable.
-
----
-
-## March 22, 2026
-**Objective:**  
-System integration planning.
-
-**Work Done:**  
-- Defined communication between MCU, motor driver, and IR system.  
-- Designed control flow:
-  - User → MCU → IR + Motor  
-
----
-
-## April 5, 2026
+## April 16, 2026
 **Objective:**  
 Web application development.
 
@@ -160,98 +141,16 @@ Web application development.
 
 **Features:**  
 - Remote IR control  
-- Motor activation  
 
----
-
-## April 15, 2026
-**Objective:**  
-IR system testing.
-
-**Work Done:**  
-- Measured signal strength across distances.  
-- Verified NEC decoding accuracy.  
-- Tested repeater performance.
-
-**Debug Notes:**  
-- Recorded:
-  - Frequencies (38kHz)  
-  - Waveforms  
-  - Signal amplitudes  
-
----
+![alt text](image-8.png)
+![alt text](image-9.png)
 
 ## April 25, 2026
 **Objective:**  
-Full system integration testing.
+Web application development.
 
 **Work Done:**  
-- Tested complete pipeline:
-  - User → Web → MCU → IR → Device  
+- Built UI for:
+  - Presets  
 
-**Issues:**  
-- Repeater delay  
-- Motor timing inconsistencies  
-
-**Fixes:**  
-- Optimized signal processing  
-- Adjusted timing logic  
-
----
-
-## May 1, 2026
-**Objective:**  
-Final validation.
-
-**Results:**  
-- IR transmission meets range requirements  
-- Repeater accuracy >95%  
-- Motor responds within required time  
-
----
-
-## May 5, 2026
-**Objective:**  
-Finalize documentation.
-
-**Work Done:**  
-- Organized notes and diagrams.  
-- Prepared presentation topics:
-  - Design decisions  
-  - Tradeoffs  
-  - Debugging process  
-
-**Reflection:**  
-- Documentation is critical for debugging and reproducibility.  
-- Modular design simplified development.
-
----
-
-# Summary
-
-## Repeater System
-- Extends IR coverage  
-- Validates NEC signals  
-- Prevents noise amplification  
-
-## Motor System (Optional)
-- Automates enclosure  
-- Meets torque requirements  
-
-## Web Application
-- User control interface  
-- Integrates system components  
-
----
-
-# References
-- https://www.hackster.io/sainisagar7294/ir-remote-extender-and-repeater-using-555-72b678  
-- IR LED datasheets  
-- NEC protocol documentation  
-
----
-
-# Notes
-- Record all ideas, even incomplete ones.  
-- Debugging details are essential.  
-- Clear documentation enables reproducibility.
+![alt text](image-10.png)
