@@ -150,6 +150,7 @@ Added 100uF capacitors next to each 3v3 rail that will be transmitting IR signal
 ### AC-DC Validation
 <img width="326" height="206" alt="image" src="https://github.com/user-attachments/assets/34d52cee-583c-4c2e-97f6-1295de594d59" />
 Issue with the output. Had a large oscillation with swings to both postive and negative values showing an issue with the directionality. Possible cause was the Y-Grounding which caused a massive issue with an oscillating ground.
+
 ### IR Transmitter Validation
 <img width="560" height="365" alt="image" src="https://github.com/user-attachments/assets/c49146b4-f1d9-481d-b5a2-7eb3017148a0" />
 Validation of signal being transmitted with correct NEC code. From here, we tested the range and got over 20 feet of range with our design.
