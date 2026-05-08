@@ -68,3 +68,110 @@ The necessary irradiance for the [receiver[(https://cdn-shop.adafruit.com/datash
  
 ### Documents
 <img width="675" height="364" alt="Screenshot 2026-05-07 at 5 50 29 PM" src="https://github.com/user-attachments/assets/e354666c-a21c-4034-80b6-c865e50bed47" />
+<img width="551" height="603" alt="Screenshot 2026-05-07 at 6 04 01 PM" src="https://github.com/user-attachments/assets/88b073d9-1b48-4088-804a-77fed2ecdf4a" />
+
+## Feburary 20, 2026
+### Summary
+Wrote Team Contract, laid out project goals, and set general work plan.
+### Documents
+<img width="448" height="566" alt="Screenshot 2026-05-07 at 6 04 49 PM" src="https://github.com/user-attachments/assets/3b7fce5e-4e31-4583-b87c-6134a913f0d6" />
+
+## Feburary 23, 2026
+### Summary
+Worked with Warren on safety and physical housing for AC/DC offline power supply. Decided to use an alumnium box with screws as a Faraday cage for isolation and drilled holes for USB/outlet connection and elevate the PCB inside with spacers. 
+### Documents
+N/a
+
+## February 24, 2026
+### Summary
+Worked on physical design for *Roomify* box in Fusion360 (3D print). Modified [online build](https://www.patreon.com/posts/spotify-record-127390794) from ConceptBytes for our 4" touchscreen display and to have more holes for the infrared LEDs. 
+### Documents
+<img width="642" height="645" alt="Screenshot 2026-05-07 at 6 10 49 PM" src="https://github.com/user-attachments/assets/113cc326-d231-4280-a38d-627a1233f446" />
+
+## February 26, 2026
+### Summary
+Finalized *Roomify* design and worked on materials and writing for Design Document. Finalized concrete requirements and verifications for each subsystem, performed budget analysis, and created lab safety manual for working on the custom AC/DC power supply.
+### Documents
+(Design Document)[https://courses.grainger.illinois.edu/ece445/getfile.asp?id=25512]
+
+## March 4, 2026
+### Summary
+Finalized parts list and ordered parts.
+### Documents
+[Parts List](https://docs.google.com/spreadsheets/d/1-fnsKsyJnyMvIRFSJjLwY7wGSIy1z5_c-u9sJiDKEsk/edit?usp=sharing)
+
+## March 9, 2026
+### Summary
+Worked on breadboard demo. Used an Arduino Uno R4 in place of our ESP32. Added a button for cycling through four LED light colors, open YouTube on the mini projector, and playing
+ Spotify playlists. After pressing the button, the LED light strip color infrared remote code is transmitted (at around ~20mA), and an HTTP POST request is made to start Spotify playback.
+
+### Documents
+<img width="330" height="179" alt="Screenshot 2026-05-07 at 7 17 07 PM" src="https://github.com/user-attachments/assets/474d5f6e-8216-4ec1-9607-3b11aec01433" />
+
+```c
+if (lastState == HIGH && currentState == LOW) {
+   preset++;
+   if (preset >= numPresets) preset = 0;
+   Serial.print("Switched to preset: ");
+   Serial.println(preset);
+
+
+   uint16_t codeToSend = presets[preset].code;
+   Serial.print("Sending LED " + String(presets[preset].name) + " " + "code: 0x");
+   Serial.println(codeToSend, HEX);
+
+
+   // LED lights
+   IrSender.sendNEC(0x00, codeToSend, 3);
+
+
+   delay(500);
+   // mini projector
+  
+   IrSender.sendNEC(0x88, 0x55, 3);
+
+
+   delay(500);
+   sent = 1;
+ }
+
+
+ lastState = currentState;
+ delay(50);
+
+```
+]
+## March 29, 2026
+### Summary
+Began board bring-up with team. Soldered ESP32 and USB-C programming connectors using heat gun, solder paste, and soldering iron. 
+### Documents
+<img width="315" height="300" alt="Screenshot 2026-05-07 at 7 25 42 PM" src="https://github.com/user-attachments/assets/16646924-fbcd-444c-b5a2-c70874f0547e" />
+<img width="301" height="323" alt="Screenshot 2026-05-07 at 7 25 22 PM" src="https://github.com/user-attachments/assets/14bd603c-050e-4388-b54a-241a7a6b1d57" />
+<img width="312" height="212" alt="Screenshot 2026-05-07 at 7 26 18 PM" src="https://github.com/user-attachments/assets/cb00621f-8ce5-4762-a94d-1c7e425f0236" />
+
+
+## April 6, 2026
+### Summary
+Worked on programming touchscreen display and developing *Roomify* user interface. Used Adafruit graphics library to drive the touchscreen display. Maintained display state and pages through global variables, and handled user input with a touch handler. Added the ability to transmit individual infrared remote codes via the touchscreen display. 
+### Documents
+<img width="547" height="531" alt="Screenshot 2026-05-07 at 7 31 27 PM" src="https://github.com/user-attachments/assets/2c320496-fa80-4377-a4cd-40b08403c02f" />
+
+## April 14, 2026
+### Summary
+Finalized CAD for physical box and 3D printed box parts at the CUC Fab Lab. 
+### Documents
+<img width="691" height="602" alt="Screenshot 2026-05-07 at 7 48 57 PM" src="https://github.com/user-attachments/assets/cc400f42-c2c4-43a2-a3fa-01acffb7322a" />
+<img width="272" height="277" alt="Screenshot 2026-05-07 at 7 48 37 PM" src="https://github.com/user-attachments/assets/8e6a7780-95d6-4000-8bad-448e4fff5757" />
+
+## April 22, 2026
+### Summary
+Worked on integrating all of *Roomify*'s subsystems and debugged infrared transmission (did not iniitalize SEND pin, but infrared LEDs were still picking up on signal from other pin, giving very low range). Added omnidirectional transmission (transmit across all IR LEDs in series), packaged everything inside of *Roomify* box, assembled repeater (capybara), simplified touchscreen display UI, and finished the mobile web app (add remote/pair button, create preset, view preset, trigger preset). 
+### Documents
+<img width="40%" alt="Screenshot 2026-05-07 at 7 52 22 PM" src="https://github.com/user-attachments/assets/0bc5549c-ab6d-4bbb-a167-51bde5d5e08b" /> 
+<img width="40%" alt="Screenshot 2026-05-07 at 7 51 32 PM" src="https://github.com/user-attachments/assets/f4623aab-07f8-46c5-a784-3cb0a6759d6a" />
+<img width="40%" alt="Screenshot 2026-05-07 at 7 51 13 PM" src="https://github.com/user-attachments/assets/1aa8f896-3aa1-471b-ab61-67f8804df280" />
+<img width="40%" alt="Screenshot 2026-05-07 at 7 50 46 PM" src="https://github.com/user-attachments/assets/f04fce6b-b041-49bb-b6ae-ad1235e20270" />
+<img width="40%" alt="Screenshot 2026-05-07 at 7 50 13 PM" src="https://github.com/user-attachments/assets/eede2656-138f-4ece-821c-80fb107bf729" />
+<img width="40%" alt="Screenshot 2026-05-07 at 7 50 03 PM" src="https://github.com/user-attachments/assets/cbeb7d27-b617-441d-98df-d3fdbeb891f3" />
+
+
