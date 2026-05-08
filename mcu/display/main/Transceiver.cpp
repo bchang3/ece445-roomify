@@ -1,9 +1,9 @@
 #include "Transceiver.h"
+#include <IRremote.hpp>
 
 void initTransceiver() {
   IrSender.begin(IR_TRANSMIT_PIN);
   IrReceiver.begin(IR_RECEIVE_PIN, true);
-  IrReceiver.stop();
 }
 
 void receiveSignal() {
@@ -18,4 +18,8 @@ void receiveSignal() {
         IrReceiver.printIRSendUsage(&Serial);
     }
   }
+}
+
+void sendNEC(uint32_t command) {
+  IrSender.sendNEC(0x00, command, 1);
 }

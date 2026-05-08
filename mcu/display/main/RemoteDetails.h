@@ -12,13 +12,10 @@
 #include "Remotes.h"
 #include "Icons.h"
 #include "Colors.h"
+#include "Transceiver.h"
 
-
-
-class IRsend;
 
 extern Arduino_GFX *gfx; 
-extern IRsend IrSender;
 
 extern RemoteButton activeButtons[24]; 
 extern int activeButtonCount;

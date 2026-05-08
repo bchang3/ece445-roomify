@@ -98,3 +98,50 @@ void fetchButtons(String remoteID) {
   
   http.end();
 }
+
+void pollCommands(String boardSerial) {
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  WiFiClientSecure client;
+  client.setInsecure();
+  HTTPClient http;
+
+  String url = "https://roomify.overunderdev.com/commands/" + boardSerial;
+  http.begin(client, url);
+  int httpResponseCode = http.GET();
+
+  if (httpResponseCode == 200) {
+    String payload = http.getString();
+    DynamicJsonDocument doc(4096); 
+    DeserializationError error = deserializeJson(doc, payload);
+
+    if (!error) {
+      JsonArray commands = doc.as<JsonArray>();
+
+      for (JsonObject cmd : commands) {
+        String cmdId = cmd["id"].as<String>();
+        String hexString = cmd["command"].as<String>();
+
+
+        uint32_t code = strtoul(hexString.c_str(), NULL, 0);
+
+        Serial.printf("Executing Cloud Command: %s\n", hexString.c_str());
+
+        sendNEC(code);
+
+        String completeUrl = "https://roomify.overunderdev.com/commands/" + cmdId + "/complete";
+        HTTPClient httpPost;
+        httpPost.begin(client, completeUrl);
+        int postCode = httpPost.POST(""); 
+        
+        if (postCode == 200) {
+          Serial.printf("Command %s marked 'done'.\n", cmdId.c_str());
+        }
+        httpPost.end();
+
+        delay(100); 
+      }
+    }
+  }
+  http.end();
+}

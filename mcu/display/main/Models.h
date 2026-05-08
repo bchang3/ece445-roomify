@@ -14,6 +14,7 @@ struct RemoteButton {
   String id;
   String name;
   String command;
+  String device_header;
 };
 
 #endif

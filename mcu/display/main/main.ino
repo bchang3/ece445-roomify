@@ -51,6 +51,8 @@ bool isFocalTouch = false;
 Adafruit_FT6206 focal_ctp = Adafruit_FT6206();
 Adafruit_CST8XX cst_ctp = Adafruit_CST8XX();
 
+unsigned long lastPollTime = 0;
+const unsigned long pollInterval = 1000;
 
 void setup() {
   Serial.begin(115200);
@@ -88,6 +90,10 @@ void loop() {
   }
 
   receiveSignal();
+  // if (millis() - lastPollTime > pollInterval) {
+  //   pollCommands(boardSerial);
+  //   lastPollTime = millis();
+  // }
 }
 
 // Handle touch input

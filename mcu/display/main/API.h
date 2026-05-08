@@ -19,4 +19,5 @@ extern int activeButtonCount;
 
 void fetchRemotes(String boardSerial);
 void fetchButtons(String remoteID);
+void pollCommands(String boardSerial);
 #endif

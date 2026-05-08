@@ -96,7 +96,7 @@ void handleDetailsTouch(int tx, int ty) {
 
             if (tx >= btnX && tx <= (btnX + btnW) && ty >= y && ty <= (y + btnH)) {
                 uint32_t codeToSend = strtoul(activeButtons[i].command.c_str(), NULL, 0);
-                IrSender.sendNEC(0x00, codeToSend, 3);
+                sendNEC(codeToSend);
                 Serial.printf("Sent NEC: 0x%02X\n", codeToSend);
                 return;
             }
